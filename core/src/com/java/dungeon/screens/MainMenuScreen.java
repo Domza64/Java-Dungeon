@@ -6,9 +6,8 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.java.dungeon.FontUtils;
 import com.java.dungeon.JavaDungeonGame;
 import com.java.dungeon.sounds.Sounds;
 
@@ -40,11 +39,16 @@ public class MainMenuScreen implements Screen {
         camera.update();
         game.batch.setProjectionMatrix(camera.combined);
 
+        update(delta);
+
         game.batch.begin();
         game.batch.draw(background, 0, 0, 1280, 720);
-        renderTitle();
-        renderStartText();
+        renderText();
         game.batch.end();
+    }
+
+    private void update(float deltaTime) {
+        // Intersector.
 
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             game.soundManager.stopPlaying();
@@ -78,24 +82,9 @@ public class MainMenuScreen implements Screen {
         background.dispose();
     }
 
-    private void renderTitle() {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/bitmgothic/Bitmgothic.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 150;
-        parameter.color = new Color(0.85f, 0.8f, 0.7f, 1f);
-        BitmapFont font = generator.generateFont(parameter);
-        generator.dispose();
-
-        font.draw(game.batch, "Java Dungeon", 180, 550); // TODO - Actually center the title on the screen
-    }
-    private void renderStartText() {
-        FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal("fonts/minecraft/Minecraft.ttf"));
-        FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-        parameter.size = 24;
-        parameter.color = new Color(1.0f, 1.0f, 1.0f, 1f);
-        BitmapFont font = generator.generateFont(parameter);
-        generator.dispose();
-
-        font.draw(game.batch, "Press ENTER to Start!", 500, 250); // TODO - Actually center the title on the screen
+    private void renderText() {
+        // TODO - Actually center the title on the screen
+        FontUtils.getFont(FontUtils.Fonts.BITMGOTHIC, 150, new Color(0.85f, 0.8f, 0.7f, 1f)).draw(game.batch, "Java Dungeon", 180, 550);
+        FontUtils.getFont(FontUtils.Fonts.MINECRAFT, 24, new Color(1.0f, 1.0f, 1.0f, 1.0f)).draw(game.batch, "Press ENTER to Start!", 500, 250);
     }
 }

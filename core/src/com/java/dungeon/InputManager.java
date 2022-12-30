@@ -2,6 +2,7 @@ package com.java.dungeon;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.java.dungeon.gameObjects.Player;
 import com.java.dungeon.sounds.SoundEffects;
 
 public class InputManager {

@@ -1,11 +1,11 @@
-package com.java.dungeon;
+package com.java.dungeon.gameObjects;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 
 import java.awt.*;
 
-public class Player extends Rectangle {
+public class Player extends GameObject {
     private int health, speed;
     private Texture texture;
 

@@ -2,6 +2,7 @@ package com.java.dungeon;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.java.dungeon.gameObjects.Player;
 import com.java.dungeon.screens.MainMenuScreen;
 import com.java.dungeon.sounds.SoundManager;
 
