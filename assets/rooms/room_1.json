@@ -1,0 +1,17 @@
+{
+  "music": "LEVEL_THEME",
+  "background": "ROOM_1",
+  "number": 1,
+  "exits": [
+    {
+      "class": "com.java.dungeon.gameObjects.ExitObject",
+      "x": 590,
+      "y": 0,
+      "width": 100,
+      "height": 150,
+      "leadsTo": "ROOM_2",
+      "isUnlocked": true
+    }
+  ],
+  "items": []
+}

@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.java.dungeon.FontUtils;
 import com.java.dungeon.JavaDungeonGame;
+import com.java.dungeon.rooms.Rooms;
 import com.java.dungeon.sounds.Sounds;
 
 
@@ -52,7 +53,7 @@ public class MainMenuScreen implements Screen {
 
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             game.soundManager.stopPlaying();
-            game.setScreen(new GameScreen(game));
+            game.setScreen(new GameScreen(game, Rooms.ROOM_1));
             dispose();
         }
     }
