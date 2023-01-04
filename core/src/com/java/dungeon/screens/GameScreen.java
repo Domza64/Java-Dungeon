@@ -11,6 +11,7 @@ import com.java.dungeon.JavaDungeonGame;
 import com.java.dungeon.Utils;
 import com.java.dungeon.gameObjects.ExitObject;
 import com.java.dungeon.gameObjects.Item;
+import com.java.dungeon.gameObjects.KeyItem;
 import com.java.dungeon.rooms.JsonBaseRoom;
 import com.java.dungeon.rooms.Rooms;
 import com.java.dungeon.sounds.Sounds;
@@ -21,6 +22,8 @@ public class GameScreen implements Screen {
     private Texture background;
     private Array<ExitObject> exits;
     private Array<Item> items;
+    long startTime;
+    long time = 0;
 
     public GameScreen(final JavaDungeonGame game, Rooms room) {
         this.game = game;
@@ -29,6 +32,7 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, 1280, 720);
 
         loadRoom(room);
+        startTime = System.currentTimeMillis();
     }
 
     @Override
@@ -40,6 +44,11 @@ public class GameScreen implements Screen {
         InputManager.movePlayer(game.player);
         InputManager.checkInput(game);
         checkCollision();
+
+        long temp = (System.currentTimeMillis() - startTime) / 1000;
+        if (time < temp) {
+            time = temp;
+        }
     }
 
     @Override
@@ -51,12 +60,21 @@ public class GameScreen implements Screen {
         update(delta);
 
         game.batch.begin();
-
+        // Background
         game.batch.draw(background, 0, 0, 1280, 720);
-        game.batch.draw(game.player.getTexture(), game.player.x, game.player.y, game.player.width, game.player.height);
-
+        // Player
+        game.player.render(game.batch);
+        // Exits
         if (!exits.isEmpty()) {
-            game.batch.draw(ExitObject.texture, exits.get(0).x, exits.get(0).y, exits.get(0).width, exits.get(0).height);
+            for (ExitObject e : exits) {
+                game.batch.draw(ExitObject.texture, e.x, e.y, e.width, e.height);
+            }
+        }
+        // Items
+        if (!items.isEmpty()) {
+            for (Item i : items) {
+                game.batch.draw(new Texture(Gdx.files.internal("textures/items/key_item.png")), i.x, i.y, i.width, i.height);
+            }
         }
 
         game.batch.end();
@@ -64,11 +82,26 @@ public class GameScreen implements Screen {
 
     private void checkCollision() {
         // Checks if player collides with anything
+
         if (!exits.isEmpty()) {
             for (ExitObject e : exits) {
                 if (game.player.intersects(e)) {
                     if (e.getLeadsTo() != null) {
-                        loadRoom(e.getLeadsTo());
+                        if (e.isUnlocked()) {
+                            loadRoom(e.getLeadsTo());
+                        }
+                        else {
+                            boolean keyFound = false;
+                            for (Item i : game.player.getInventory()) {
+                                if (i.getClass() == KeyItem.class) {
+                                    game.player.getInventory().removeValue(i, true);
+                                    e.unlock();
+                                    keyFound = true;
+                                    break;
+                                }
+                            }
+                            if (!keyFound) System.out.println("This exit is locked... Need to find a key first");
+                        }
                     }
                     else {
                         System.err.println("Exit does not lead anywhere???");
@@ -80,7 +113,10 @@ public class GameScreen implements Screen {
         if (!items.isEmpty()) {
             for (Item i : items) {
                 if (game.player.intersects(i)) {
-                    // Do something
+                    if (items.removeValue(i, true)) {
+                        game.player.getInventory().add(i);
+                    }
+                    else System.err.println("Item not removed???");
                 }
             }
         }

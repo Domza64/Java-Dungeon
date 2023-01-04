@@ -5,8 +5,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.java.dungeon.rooms.Rooms;
 
 public class ExitObject extends GameObject {
-    private final Rooms leadsTo;
     public static final Texture texture = new Texture(Gdx.files.internal("textures/exit_texture.png"));
+    private final Rooms leadsTo;
     private boolean isUnlocked;
 
     public ExitObject(Rooms room) {
@@ -26,5 +26,13 @@ public class ExitObject extends GameObject {
 
     public Rooms getLeadsTo() {
         return leadsTo;
+    }
+
+    public boolean isUnlocked() {
+        return isUnlocked;
+    }
+
+    public void unlock() {
+        isUnlocked = true;
     }
 }
