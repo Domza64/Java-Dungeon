@@ -5,7 +5,7 @@ import com.badlogic.gdx.graphics.Texture;
 
 public class SwordItem extends Item {
     public SwordItem() {
-        super(new Texture(Gdx.files.internal("textures/items/sword_item.png")));
+        super(new Texture(Gdx.files.internal("textures/item/sword_item.png")));
         width = 32;
         height = 100;
     }

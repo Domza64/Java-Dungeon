@@ -19,6 +19,25 @@ public class SoundManager {
         lastPlayed = sound;
     }
 
+    /**
+    *  Decreases volume to x percent of current volume. Example current volume is 0.8f and decreaseVolume is called with 50, volume will be set to 0.4f
+    * */
+    public void decreaseVolume(int percent) {
+        if (currentMusic != null && currentMusic.isPlaying()) {
+            float volume = (float) (currentMusic.getVolume() * (percent * 0.01));
+            currentMusic.setVolume(volume);
+        }
+    }
+
+    /**
+     *  Resets volume to original Sound volume
+     * */
+    public void resetVolume() {
+        if (currentMusic != null && currentMusic.isPlaying()) {
+            currentMusic.setVolume(lastPlayed.getVolume());
+        }
+    }
+
     public void playEffect(SoundEffects effect) {
         soundEffect = Gdx.audio.newSound(Gdx.files.internal(effect.getPath()));
         soundEffect.play();

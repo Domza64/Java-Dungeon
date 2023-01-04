@@ -9,7 +9,7 @@ public class Utils {
         return new Json().fromJson(JsonBaseRoom.class, file);
     }
 
-    //    public static void objectToJsonString() {
+//        public static void objectToJsonString() {
 //        Json json = new Json();
 //        JsonBaseRoom room = new JsonBaseRoom();
 //        room.number = 1;

@@ -10,9 +10,11 @@ public class JavaDungeonGame extends Game {
     public SpriteBatch batch;
     public SoundManager soundManager;
     public Player player;
+    public boolean pause;
 
     @Override
     public void create() {
+        pause = false;
         batch = new SpriteBatch();
         soundManager = new SoundManager();
         player = new Player();

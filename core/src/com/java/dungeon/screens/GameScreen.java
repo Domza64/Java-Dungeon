@@ -2,10 +2,13 @@ package com.java.dungeon.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.java.dungeon.FontUtils;
 import com.java.dungeon.InputManager;
 import com.java.dungeon.JavaDungeonGame;
 import com.java.dungeon.Utils;
@@ -14,6 +17,7 @@ import com.java.dungeon.gameObjects.Item;
 import com.java.dungeon.gameObjects.KeyItem;
 import com.java.dungeon.rooms.JsonBaseRoom;
 import com.java.dungeon.rooms.Rooms;
+import com.java.dungeon.sounds.SoundEffects;
 import com.java.dungeon.sounds.Sounds;
 
 public class GameScreen implements Screen {
@@ -22,8 +26,6 @@ public class GameScreen implements Screen {
     private Texture background;
     private Array<ExitObject> exits;
     private Array<Item> items;
-    long startTime;
-    long time = 0;
 
     public GameScreen(final JavaDungeonGame game, Rooms room) {
         this.game = game;
@@ -32,7 +34,6 @@ public class GameScreen implements Screen {
         camera.setToOrtho(false, 1280, 720);
 
         loadRoom(room);
-        startTime = System.currentTimeMillis();
     }
 
     @Override
@@ -41,13 +42,10 @@ public class GameScreen implements Screen {
     }
 
     private void update(float deltaTime) {
-        InputManager.movePlayer(game.player);
         InputManager.checkInput(game);
-        checkCollision();
-
-        long temp = (System.currentTimeMillis() - startTime) / 1000;
-        if (time < temp) {
-            time = temp;
+        if (!game.pause) {
+            InputManager.movePlayer(game.player);
+            checkCollision();
         }
     }
 
@@ -76,7 +74,8 @@ public class GameScreen implements Screen {
                 game.batch.draw(i.getTexture(), i.x, i.y, i.width, i.height);
             }
         }
-
+        // This pause menu is obviously temporary
+        if (game.pause) game.batch.draw(new Texture(Gdx.files.internal("textures/ui/pause_menu.png")), 415,225, 450, 270);
         game.batch.end();
     }
 
@@ -88,6 +87,7 @@ public class GameScreen implements Screen {
                 if (game.player.intersects(e)) {
                     if (e.getLeadsTo() != null) {
                         if (e.isUnlocked()) {
+                            game.soundManager.playEffect(e.effect);
                             loadRoom(e.getLeadsTo());
                         }
                         else {
@@ -115,6 +115,7 @@ public class GameScreen implements Screen {
                 if (game.player.intersects(i)) {
                     if (items.removeValue(i, true)) {
                         game.player.getInventory().add(i);
+                        game.soundManager.playEffect(SoundEffects.POP_EFFECT);
                     }
                     else System.err.println("Item not removed???");
                 }
@@ -129,12 +130,16 @@ public class GameScreen implements Screen {
 
     @Override
     public void pause() {
-
+        game.soundManager.playEffect(SoundEffects.PAUSE_EFFECT);
+        game.soundManager.decreaseVolume(25);
+        game.pause = true;
     }
 
     @Override
     public void resume() {
-
+        game.soundManager.playEffect(SoundEffects.PAUSE_EFFECT);
+        game.soundManager.resetVolume();
+        game.pause = false;
     }
 
     @Override

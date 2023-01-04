@@ -18,7 +18,7 @@ public class Player extends GameObject {
 
         inventory = new Array<>();
 
-        texture = new Texture(Gdx.files.internal("textures/character.png")); // TODO - Dispose texture
+        texture = new Texture(Gdx.files.internal("textures/objects/character.png")); // TODO - Dispose texture
         // 15 and 21 are pixel dimensions of character.png file (Player texture) // TODO - not hard code this, maybe make it check texture dimensions
         this.x = 1280 / 2 - 21 / 2;
         this.y = 720 / 2 - 15 / 2;

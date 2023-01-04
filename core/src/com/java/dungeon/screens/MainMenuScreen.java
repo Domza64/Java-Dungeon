@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.java.dungeon.Backgrounds;
 import com.java.dungeon.FontUtils;
 import com.java.dungeon.JavaDungeonGame;
 import com.java.dungeon.rooms.Rooms;
@@ -25,7 +26,7 @@ public class MainMenuScreen implements Screen {
         camera.setToOrtho(false, 1280, 720);
 
         this.game.soundManager.play(Sounds.MAIN_THEME);
-        background = new Texture(Gdx.files.internal("textures/main_menu_background.png"));
+        background = Backgrounds.MAIN_MENU.getTexture();
     }
 
     @Override

@@ -3,20 +3,15 @@ package com.java.dungeon.gameObjects;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.java.dungeon.rooms.Rooms;
+import com.java.dungeon.sounds.SoundEffects;
 
 public class ExitObject extends GameObject {
-    public static final Texture texture = new Texture(Gdx.files.internal("textures/exit_texture.png"));
+    public static final Texture texture = new Texture(Gdx.files.internal("textures/objects/exit_texture.png"));
     private final Rooms leadsTo;
     private boolean isUnlocked;
+    public SoundEffects effect;
 
-    public ExitObject(Rooms room) {
-        this.leadsTo = room;
-        this.isUnlocked = true;
-        this.height = 150;
-        this.width = 100;
-    }
 
-    // This is needed for making exit objects from JSON, do NOT delete even though Intellij says it is not used
     public ExitObject() {
         this.leadsTo = null;
     }

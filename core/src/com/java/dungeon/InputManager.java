@@ -3,7 +3,6 @@ package com.java.dungeon;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.java.dungeon.gameObjects.Player;
-import com.java.dungeon.sounds.SoundEffects;
 
 public class InputManager {
     public static void movePlayer(Player player) {
@@ -27,6 +26,13 @@ public class InputManager {
     }
 
     public static void checkInput(JavaDungeonGame game) {
-        if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) game.soundManager.playEffect(SoundEffects.SUSPEND_EFFECT);
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            if (game.pause) {
+                game.resume();
+            }
+            else {
+                game.pause();
+            }
+        }
     }
 }
