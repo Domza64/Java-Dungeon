@@ -10,11 +10,10 @@ import java.awt.*;
 public class Player extends GameObject {
     private int health, speed;
     private Texture texture;
-
     private Array<Item> inventory;
 
-    public Player(int health) {
-        this.health = health;
+    public Player() {
+        this.health = 10;
         this.speed = 300;
 
         inventory = new Array<>();
@@ -32,11 +31,21 @@ public class Player extends GameObject {
     }
 
     public int getSpeed() {
-        return speed;
+        return speed - (150 - (health * 15));
     }
 
     public void render(Batch batch) {
         batch.draw(texture, x, y, width, height);
+
+
+        // JUST TEMP FOR FUN -----------------------------------
+        // Actually in future this will display selected slot but slot selection will be added with UI update
+        if (!inventory.isEmpty()) {
+            Item item = inventory.get(0);
+            batch.draw(item.getTexture(), x + 60, y + 25, item.width, item.height);
+        }
+        // -----------------------------------------------------
+
     }
 
     public Array<Item> getInventory() {

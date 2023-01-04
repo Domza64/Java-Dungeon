@@ -73,7 +73,7 @@ public class GameScreen implements Screen {
         // Items
         if (!items.isEmpty()) {
             for (Item i : items) {
-                game.batch.draw(new Texture(Gdx.files.internal("textures/items/key_item.png")), i.x, i.y, i.width, i.height);
+                game.batch.draw(i.getTexture(), i.x, i.y, i.width, i.height);
             }
         }
 

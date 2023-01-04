@@ -13,5 +13,11 @@
       "isUnlocked": true
     }
   ],
-  "items": []
+  "items": [
+    {
+      "class": "com.java.dungeon.gameObjects.SwordItem",
+      "x": 100,
+      "y": 100
+    }
+  ]
 }

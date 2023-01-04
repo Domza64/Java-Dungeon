@@ -7,13 +7,16 @@ import com.badlogic.gdx.audio.Sound;
 public class SoundManager {
     private Music currentMusic;
     private Sound soundEffect;
+    private Sounds lastPlayed;
 
     public void play(Sounds sound) {
+        if (lastPlayed == sound) return;
         if (currentMusic != null && currentMusic.isPlaying()) currentMusic.dispose();
         currentMusic = Gdx.audio.newMusic(Gdx.files.internal(sound.getPath()));
         currentMusic.setLooping(true);
         currentMusic.setVolume(sound.getVolume());
         currentMusic.play();
+        lastPlayed = sound;
     }
 
     public void playEffect(SoundEffects effect) {

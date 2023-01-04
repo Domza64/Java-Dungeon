@@ -14,9 +14,6 @@ public class ExitObject extends GameObject {
         this.isUnlocked = true;
         this.height = 150;
         this.width = 100;
-
-        // TODO - this is just temp location for testing
-        this.x = (1280 / 2) - (this.width / 2);
     }
 
     // This is needed for making exit objects from JSON, do NOT delete even though Intellij says it is not used

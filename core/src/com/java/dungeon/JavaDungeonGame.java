@@ -15,7 +15,7 @@ public class JavaDungeonGame extends Game {
     public void create() {
         batch = new SpriteBatch();
         soundManager = new SoundManager();
-        player = new Player(10);
+        player = new Player();
         this.setScreen(new MainMenuScreen(this));
     }
 
