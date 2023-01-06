@@ -58,6 +58,7 @@ public class Player extends Entity {
             if (!inventory.isEmpty()) {
                 Item item = inventory.get(0);
                 if(item.getClass() == SwordItem.class) {
+                    this.game.soundManager.playEffect(SoundEffects.SWORD_EFFECT);
                     for (Entity e : game.entities) {
                         if (e.getClass() == Enemy.class) {
                             if (Vector2.dst(e.x, e.y, this.x, this.y) < 130) {
@@ -65,7 +66,6 @@ public class Player extends Entity {
                             }
                         }
                     }
-                    this.game.soundManager.playEffect(SoundEffects.GUITAR_EFFECT);
                 }
             }
             canUseItem = false;

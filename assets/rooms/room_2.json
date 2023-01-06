@@ -16,8 +16,8 @@
   "items": [
     {
       "class": "com.java.dungeon.gameObjects.item.SwordItem",
-      "x": 100,
-      "y": 100
+      "x": 1000,
+      "y": 200
     }
   ],
   "entities": []

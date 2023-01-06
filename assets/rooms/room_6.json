@@ -4,5 +4,11 @@
   "number": 6,
   "exits": [],
   "items": [],
-  "entities": []
+  "entities": [
+    {
+      "class": "com.java.dungeon.gameObjects.entity.Enemy",
+      "width": 180,
+      "height": 320
+    }
+  ]
 }

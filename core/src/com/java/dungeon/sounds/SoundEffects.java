@@ -6,6 +6,7 @@ public enum SoundEffects {
     PAUSE_EFFECT("sounds/effects/pause.mp3"),
     POP_EFFECT("sounds/effects/pop.mp3"),
     WHIP_EFFECT("sounds/effects/whip.mp3"),
+    SWORD_EFFECT("sounds/effects/sword.mp3"),
     COOL_DOOR_EFFECT("sounds/effects/cool_door.mp3"),
     DOOR_EFFECT("sounds/effects/door.mp3");
 

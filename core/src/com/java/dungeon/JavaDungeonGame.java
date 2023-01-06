@@ -35,7 +35,7 @@ public class JavaDungeonGame extends Game {
     }
 
     public void dispose() {
-//        batch.dispose(); // TODO - Error when disposing
+        batch.dispose();
         soundManager.dispose();
     }
 

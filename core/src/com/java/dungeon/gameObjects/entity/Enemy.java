@@ -11,7 +11,7 @@ import com.java.dungeon.JavaDungeonGame;
 import com.java.dungeon.sounds.SoundEffects;
 
 public class Enemy extends Entity {
-    private long attackTime;
+    private long timeSinceLastAttack;
     private boolean canAttack;
     private final int attackSpeed = 2; // Time needed to recharge attack, example 4 means enemy will attack every 4 seconds
     public boolean shouldDie;
@@ -41,9 +41,9 @@ public class Enemy extends Entity {
             game.soundManager.playEffect(SoundEffects.WHIP_EFFECT);
             attack(game.player);
             canAttack = false;
-            attackTime = TimeUtils.millis();
+            timeSinceLastAttack = TimeUtils.millis();
         }
-        if (attackTime < TimeUtils.millis() - attackSpeed * 1000) {
+        if (timeSinceLastAttack < TimeUtils.millis() - attackSpeed * 1000) {
             canAttack = true;
         }
     }

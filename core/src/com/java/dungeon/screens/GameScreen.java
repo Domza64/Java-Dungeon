@@ -58,6 +58,8 @@ public class GameScreen implements Screen {
                     Enemy enemy = (Enemy) e;
                     if (enemy.shouldDie) {
                         game.entities.removeValue(enemy, true);
+                        enemy.texture.dispose();
+                        game.soundManager.playEffect(SoundEffects.SUSPEND_EFFECT);
                     } else {
                         enemy.update(game);
                     }
@@ -182,10 +184,12 @@ public class GameScreen implements Screen {
         this.game.player.y = (720 / 2) - (this.game.player.height / 2);
 
         background = roomToLoad.background.getTexture();
+
         Sounds musicTheme = roomToLoad.music;
         if (musicTheme != null) {
             this.game.soundManager.play(musicTheme);
         }
+
         spawnItems(roomToLoad);
         createExits(roomToLoad);
         spawnEntities(roomToLoad);

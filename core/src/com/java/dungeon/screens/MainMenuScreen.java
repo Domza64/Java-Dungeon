@@ -63,6 +63,7 @@ public class MainMenuScreen implements Screen {
         }
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             dispose();
+            game.dispose();
             Gdx.app.exit();
         }
     }
@@ -92,7 +93,6 @@ public class MainMenuScreen implements Screen {
         background.dispose();
         title.dispose();
         startText.dispose();
-        game.dispose();
     }
 
     private void renderText() {
