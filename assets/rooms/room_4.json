@@ -1,36 +1,33 @@
 {
   "music": "LEVEL_THEME",
   "background": "ROOM_BACKGROUND",
-  "number": 1,
+  "number": 4,
   "exits": [
-    {
-      "x": 0,
-      "y": 285,
-      "width": 100,
-      "height": 150,
-      "leadsTo": "ROOM_3",
-      "effect": "DOOR_EFFECT",
-      "isUnlocked": true
-    },
     {
       "x": 1180,
       "y": 285,
       "width": 100,
       "height": 150,
-      "leadsTo": "ROOM_2",
+      "leadsTo": "ROOM_5",
       "effect": "DOOR_EFFECT",
       "isUnlocked": true
     },
     {
       "x": 590,
-      "y": 570,
+      "y": 0,
       "width": 100,
       "height": 150,
-      "leadsTo": "ROOM_5",
+      "leadsTo": "ROOM_3",
       "effect": "DOOR_EFFECT",
       "isUnlocked": true
     }
   ],
-  "items": [],
+  "items": [
+    {
+      "class": "com.java.dungeon.gameObjects.item.KeyItem",
+      "x": 200,
+      "y": 20
+    }
+  ],
   "entities": []
 }

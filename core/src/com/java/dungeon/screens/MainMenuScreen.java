@@ -6,6 +6,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.java.dungeon.Backgrounds;
 import com.java.dungeon.FontUtils;
@@ -18,12 +19,17 @@ public class MainMenuScreen implements Screen {
     final JavaDungeonGame game;
     private OrthographicCamera camera;
     private Texture background;
+    private BitmapFont title;
+    private BitmapFont startText;
 
     public MainMenuScreen(final JavaDungeonGame game) {
         this.game = game;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1280, 720);
+
+        startText = FontUtils.getFont(FontUtils.Fonts.MINECRAFT, 24, new Color(1.0f, 1.0f, 1.0f, 1.0f));
+        title = FontUtils.getFont(FontUtils.Fonts.BITMGOTHIC, 150, new Color(0.85f, 0.8f, 0.7f, 1f));
 
         this.game.soundManager.play(Sounds.MAIN_THEME);
         background = Backgrounds.MAIN_MENU.getTexture();
@@ -50,12 +56,14 @@ public class MainMenuScreen implements Screen {
     }
 
     private void update(float deltaTime) {
-        // Intersector.
-
         if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
             game.soundManager.stopPlaying();
             game.setScreen(new GameScreen(game, Rooms.ROOM_1));
             dispose();
+        }
+        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
+            dispose();
+            Gdx.app.exit();
         }
     }
 
@@ -82,11 +90,14 @@ public class MainMenuScreen implements Screen {
     @Override
     public void dispose() {
         background.dispose();
+        title.dispose();
+        startText.dispose();
+        game.dispose();
     }
 
     private void renderText() {
         // TODO - Actually center the title on the screen
-        FontUtils.getFont(FontUtils.Fonts.BITMGOTHIC, 150, new Color(0.85f, 0.8f, 0.7f, 1f)).draw(game.batch, "Java Dungeon", 180, 550);
-        FontUtils.getFont(FontUtils.Fonts.MINECRAFT, 24, new Color(1.0f, 1.0f, 1.0f, 1.0f)).draw(game.batch, "Press ENTER to Start!", 500, 250);
+        title.draw(game.batch, "Java Dungeon", (camera.viewportWidth / 2) - 450, 550); // TODO - Replace 450 with font width
+        startText.draw(game.batch, "Press ENTER to Start!", (camera.viewportWidth / 2) - 160, 250); // TODO - Replace 160 with font width
     }
 }

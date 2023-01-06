@@ -1,4 +1,4 @@
-package com.java.dungeon.gameObjects;
+package com.java.dungeon.gameObjects.item;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;

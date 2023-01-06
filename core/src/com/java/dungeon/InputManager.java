@@ -2,7 +2,7 @@ package com.java.dungeon;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.java.dungeon.gameObjects.Player;
+import com.java.dungeon.gameObjects.entity.Player;
 
 public class InputManager {
     public static void movePlayer(Player player) {
@@ -34,5 +34,6 @@ public class InputManager {
                 game.pause();
             }
         }
+        if (Gdx.input.isKeyJustPressed(Input.Keys.E)) game.player.useItem();
     }
 }

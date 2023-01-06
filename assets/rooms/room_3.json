@@ -1,7 +1,27 @@
 {
-  "music": "BOSS_THEME",
-  "background": "ROOM_3",
-  "number": 1,
-  "exits": [],
-  "items": []
+  "music": "LEVEL_THEME",
+  "background": "ROOM_BACKGROUND",
+  "number": 3,
+  "exits": [
+    {
+      "x": 590,
+      "y": 570,
+      "width": 100,
+      "height": 150,
+      "leadsTo": "ROOM_4",
+      "effect": "DOOR_EFFECT",
+      "isUnlocked": true
+    },
+    {
+      "x": 1180,
+      "y": 285,
+      "width": 100,
+      "height": 150,
+      "leadsTo": "ROOM_1",
+      "effect": "DOOR_EFFECT",
+      "isUnlocked": true
+    }
+  ],
+  "items": [],
+  "entities": []
 }
