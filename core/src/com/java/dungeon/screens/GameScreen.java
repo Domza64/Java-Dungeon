@@ -28,7 +28,7 @@ public class GameScreen implements Screen {
     private Texture background;
 
     // TODO - This is temp for testing it will be done in UI update
-    private BitmapFont playerHealthDisplay;
+    private final BitmapFont playerHealthDisplay;
 
     public GameScreen(final JavaDungeonGame game, Rooms room) {
         this.game = game;
@@ -154,9 +154,7 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void resize(int width, int height) {
-
-    }
+    public void resize(int width, int height) {}
 
     @Override
     public void pause() {
@@ -170,11 +168,6 @@ public class GameScreen implements Screen {
         game.soundManager.playEffect(SoundEffects.PAUSE_EFFECT);
         game.soundManager.resetVolume();
         game.pause = false;
-    }
-
-    @Override
-    public void hide() {
-
     }
 
     private void loadRoom(Rooms room) {
@@ -198,7 +191,6 @@ public class GameScreen implements Screen {
     private void spawnItems(JsonBaseRoom room) {
         game.items = new Array<>(room.items);
     }
-
     private void createExits(JsonBaseRoom room) {
         game.exits = new Array<>(room.exits);
     }
@@ -207,7 +199,10 @@ public class GameScreen implements Screen {
     }
 
     @Override
+    public void hide() {}
+    @Override
     public void dispose() {
         background.dispose();
+        game.player.texture.dispose();
     }
 }

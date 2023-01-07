@@ -11,12 +11,11 @@ import com.java.dungeon.JavaDungeonGame;
 import com.java.dungeon.sounds.SoundEffects;
 
 public class Enemy extends Entity {
-    private long timeSinceLastAttack;
     private boolean canAttack;
-    private final int attackSpeed = 2; // Time needed to recharge attack, example 4 means enemy will attack every 4 seconds
     public boolean shouldDie;
-
-    private BitmapFont healthDisplay; // TODO - dispose this
+    private long timeSinceLastAttack;
+    private final int attackSpeed; // Attack every x seconds
+    private final BitmapFont healthDisplay; // TODO - dispose this
     public Enemy() {
         super(10, 100, new Texture(Gdx.files.internal("textures/objects/enemy.png")), null); // TODO - Dispose texture
 
@@ -27,7 +26,8 @@ public class Enemy extends Entity {
         this.x = (1280 / 2) - (height / 2);
         this.y = 720 - width;
 
-        healthDisplay = FontUtils.getFont(FontUtils.Fonts.MINECRAFT, 20, new Color(0.85f, 0.8f, 0.7f, 1f));
+        attackSpeed = 3;
+        healthDisplay = FontUtils.getFont(FontUtils.Fonts.MINECRAFT, 20, Color.WHITE);
 
         canAttack = true;
         shouldDie = false;
@@ -38,12 +38,11 @@ public class Enemy extends Entity {
         moveTowardsPlayer(game.player.x, game.player.y);
 
         if (this.intersects(game.player) && canAttack) {
-            game.soundManager.playEffect(SoundEffects.WHIP_EFFECT);
-            attack(game.player);
+            attack(game.player, game);
             canAttack = false;
             timeSinceLastAttack = TimeUtils.millis();
         }
-        if (timeSinceLastAttack < TimeUtils.millis() - attackSpeed * 1000) {
+        if (timeSinceLastAttack < TimeUtils.millis() - attackSpeed * 1000L) {
             canAttack = true;
         }
     }
@@ -52,8 +51,7 @@ public class Enemy extends Entity {
     public void render(Batch batch) {
         super.render(batch);
 
-        // JUST TEMP FOR FUN -----------------------------------
-        // Actually in future this will display selected slot but slot selection will be added with UI update
+        // TODO -----------------------------------
         healthDisplay.draw(batch, "Health: " + getHealth(), x, y + height);
         // -----------------------------------------------------
     }
@@ -74,7 +72,8 @@ public class Enemy extends Entity {
         }
     }
 
-    private void attack(Entity entity) {
+    private void attack(Entity entity, JavaDungeonGame game) {
+        game.soundManager.playEffect(SoundEffects.WHIP_EFFECT);
         entity.damage(1);
     }
 
