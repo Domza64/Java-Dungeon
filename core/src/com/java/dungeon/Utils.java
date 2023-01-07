@@ -2,11 +2,11 @@ package com.java.dungeon;
 
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.Json;
-import com.java.dungeon.rooms.JsonBaseRoom;
+import com.java.dungeon.rooms.BaseRoom;
 
 public class Utils {
-    public static JsonBaseRoom loadRoomFromJson(FileHandle file) {
-        return new Json().fromJson(JsonBaseRoom.class, file);
+    public static BaseRoom loadRoomFromJson(FileHandle file) {
+        return new Json().fromJson(BaseRoom.class, file);
     }
 
 //        public static void objectToJsonString() {

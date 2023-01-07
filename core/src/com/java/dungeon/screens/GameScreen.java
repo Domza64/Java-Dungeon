@@ -17,7 +17,7 @@ import com.java.dungeon.gameObjects.entity.Enemy;
 import com.java.dungeon.gameObjects.entity.Entity;
 import com.java.dungeon.gameObjects.item.Item;
 import com.java.dungeon.gameObjects.item.KeyItem;
-import com.java.dungeon.rooms.JsonBaseRoom;
+import com.java.dungeon.rooms.BaseRoom;
 import com.java.dungeon.rooms.Rooms;
 import com.java.dungeon.sounds.SoundEffects;
 import com.java.dungeon.sounds.Sounds;
@@ -171,7 +171,7 @@ public class GameScreen implements Screen {
     }
 
     private void loadRoom(Rooms room) {
-        JsonBaseRoom roomToLoad = Utils.loadRoomFromJson(Gdx.files.internal(room.getPath()));
+        BaseRoom roomToLoad = Utils.loadRoomFromJson(Gdx.files.internal(room.getPath()));
 
         this.game.player.x = (1280 / 2) - (this.game.player.width / 2);
         this.game.player.y = (720 / 2) - (this.game.player.height / 2);
@@ -182,20 +182,7 @@ public class GameScreen implements Screen {
         if (musicTheme != null) {
             this.game.soundManager.play(musicTheme);
         }
-
-        spawnItems(roomToLoad);
-        createExits(roomToLoad);
-        spawnEntities(roomToLoad);
-    }
-
-    private void spawnItems(JsonBaseRoom room) {
-        game.items = new Array<>(room.items);
-    }
-    private void createExits(JsonBaseRoom room) {
-        game.exits = new Array<>(room.exits);
-    }
-    private void spawnEntities(JsonBaseRoom room) {
-        game.entities = new Array<>(room.entities);
+        roomToLoad.onLoad(game, this);
     }
 
     @Override
@@ -203,6 +190,6 @@ public class GameScreen implements Screen {
     @Override
     public void dispose() {
         background.dispose();
-        game.player.texture.dispose();
+        game.player.dispose();
     }
 }

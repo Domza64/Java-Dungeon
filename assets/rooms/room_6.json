@@ -1,14 +1,9 @@
 {
+  "class": "com.java.dungeon.rooms.CustomRoom6",
   "music": "BOSS_THEME",
   "background": "ROOM_BACKGROUND",
   "number": 6,
   "exits": [],
   "items": [],
-  "entities": [
-    {
-      "class": "com.java.dungeon.gameObjects.entity.Enemy",
-      "width": 180,
-      "height": 320
-    }
-  ]
+  "entities": []
 }

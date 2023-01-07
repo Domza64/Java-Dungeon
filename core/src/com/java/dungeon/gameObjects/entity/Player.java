@@ -19,14 +19,14 @@ public class Player extends Entity {
     float stateTime;
     private final Animation<TextureRegion> idleAnimation;
     private final Animation<TextureRegion> walkAnimation;
-    private final Texture walkSheet;
+    private final Texture walkTexture;
     private final Array<Item> inventory;
     private boolean canUseItem;
     private long lastItemUseTime;
 
     public Player(JavaDungeonGame game) {
         super(10, 300, new Texture(Gdx.files.internal("textures/objects/character_idle.png")), game); // TODO - Dispose texture
-        walkSheet = new Texture(Gdx.files.internal("textures/objects/character_walk.png"));
+        walkTexture = new Texture(Gdx.files.internal("textures/objects/character_walk.png"));
 
         inventory = new Array<>();
         lastItemUseTime = 0;
@@ -48,7 +48,7 @@ public class Player extends Entity {
         }
         idleAnimation = new Animation<>(1.0f, idleFrames);
 
-        TextureRegion[][] tmp2 = TextureRegion.split(walkSheet, walkSheet.getWidth() / 2, walkSheet.getHeight());
+        TextureRegion[][] tmp2 = TextureRegion.split(walkTexture, walkTexture.getWidth() / 2, walkTexture.getHeight());
         TextureRegion[] walkFrames = new TextureRegion[2];
         int index2 = 0;
         for (int i = 0; i < 1; i++) {
@@ -67,7 +67,7 @@ public class Player extends Entity {
 
     @Override
     public int getSpeed() {
-        return speed - (180 - (getHealth() * 18));
+        return super.getSpeed() - (180 - (getHealth() * 18));
     }
 
     @Override
@@ -138,8 +138,8 @@ public class Player extends Entity {
         return inventory;
     }
 
-    public void dispose() { // TODO - call this
+    public void dispose() {
         texture.dispose();
-        walkSheet.dispose();
+        walkTexture.dispose();
     }
 }

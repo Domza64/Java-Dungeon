@@ -57,18 +57,19 @@ public class Enemy extends Entity {
     }
 
     private void moveTowardsPlayer(int playerX, int playerY) {
+        System.out.println(getSpeed());
         if (playerX > x + 40) {
-            x += speed * Gdx.graphics.getDeltaTime();
+            x += getSpeed() * Gdx.graphics.getDeltaTime();
         }
         else if (playerX < x - 40){
-            x -= speed * Gdx.graphics.getDeltaTime();
+            x -= getSpeed() * Gdx.graphics.getDeltaTime();
         }
 
         if (playerY > y + 50) {
-            y += speed * Gdx.graphics.getDeltaTime();
+            y += getSpeed() * Gdx.graphics.getDeltaTime();
         }
         else if (playerY < y - 50){
-            y -= speed * Gdx.graphics.getDeltaTime();
+            y -= getSpeed() * Gdx.graphics.getDeltaTime();
         }
     }
 

@@ -7,7 +7,7 @@ import com.java.dungeon.gameObjects.GameObject;
 
 public abstract class Entity extends GameObject {
     private int health;
-    protected int speed;
+    private int speed;
     public final Texture texture;
     protected final JavaDungeonGame game;
 
@@ -40,5 +40,11 @@ public abstract class Entity extends GameObject {
 
     public void render(Batch batch) {
         batch.draw(texture, x, y, width, height);
+    }
+
+    public void setSpeed(int speed) {
+        if (speed > 0) {
+            this.speed = speed;
+        }
     }
 }
