@@ -6,10 +6,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.ScreenUtils;
 import com.java.dungeon.FontUtils;
-import com.java.dungeon.InputManager;
 import com.java.dungeon.JavaDungeonGame;
 import com.java.dungeon.Utils;
 import com.java.dungeon.gameObjects.ExitObject;
@@ -20,12 +18,12 @@ import com.java.dungeon.gameObjects.item.KeyItem;
 import com.java.dungeon.rooms.BaseRoom;
 import com.java.dungeon.rooms.Rooms;
 import com.java.dungeon.sounds.SoundEffects;
-import com.java.dungeon.sounds.Sounds;
 
 public class GameScreen implements Screen {
     private final JavaDungeonGame game;
     private final OrthographicCamera camera;
     private Texture background;
+    private BaseRoom currentRoom;
 
     // TODO - This is temp for testing it will be done in UI update
     private final BitmapFont playerHealthDisplay;
@@ -47,9 +45,8 @@ public class GameScreen implements Screen {
     }
 
     private void update(float deltaTime) {
-        InputManager.checkInput(game);
+        game.inputManager.checkKeyboardInput();
         if (!game.pause) {
-            InputManager.movePlayer(game.player);
             checkCollision();
 
             // Update enemies
@@ -66,6 +63,7 @@ public class GameScreen implements Screen {
                 }
             }
             game.player.update();
+            currentRoom.update(game, this);
         }
     }
 
@@ -171,18 +169,12 @@ public class GameScreen implements Screen {
     }
 
     private void loadRoom(Rooms room) {
-        BaseRoom roomToLoad = Utils.loadRoomFromJson(Gdx.files.internal(room.getPath()));
+        currentRoom = Utils.loadRoomFromJson(Gdx.files.internal(room.getPath()));
 
         this.game.player.x = (1280 / 2) - (this.game.player.width / 2);
         this.game.player.y = (720 / 2) - (this.game.player.height / 2);
 
-        background = roomToLoad.background.getTexture();
-
-        Sounds musicTheme = roomToLoad.music;
-        if (musicTheme != null) {
-            this.game.soundManager.play(musicTheme);
-        }
-        roomToLoad.onLoad(game, this);
+        currentRoom.onLoad(game, this);
     }
 
     @Override
@@ -191,5 +183,9 @@ public class GameScreen implements Screen {
     public void dispose() {
         background.dispose();
         game.player.dispose();
+    }
+
+    public void setBackground(Texture texture) {
+        this.background = texture;
     }
 }

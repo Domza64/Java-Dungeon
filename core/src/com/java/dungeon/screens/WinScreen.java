@@ -15,20 +15,18 @@ import com.java.dungeon.rooms.Rooms;
 import com.java.dungeon.sounds.Sounds;
 
 
-public class MainMenuScreen implements Screen {
+public class WinScreen implements Screen {
     final JavaDungeonGame game;
     private OrthographicCamera camera;
     private Texture background;
     private BitmapFont title;
-    private BitmapFont startText;
 
-    public MainMenuScreen(final JavaDungeonGame game) {
+    public WinScreen(final JavaDungeonGame game) {
         this.game = game;
 
         camera = new OrthographicCamera();
         camera.setToOrtho(false, 1280, 720);
 
-        startText = FontUtils.getFont(FontUtils.Fonts.MINECRAFT, 24, new Color(1.0f, 1.0f, 1.0f, 1.0f));
         title = FontUtils.getFont(FontUtils.Fonts.BITMGOTHIC, 150, new Color(0.85f, 0.8f, 0.7f, 1f));
 
         this.game.soundManager.play(Sounds.MAIN_THEME);
@@ -56,11 +54,6 @@ public class MainMenuScreen implements Screen {
     }
 
     private void update(float deltaTime) {
-        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            game.soundManager.stopPlaying();
-            game.start();
-            dispose();
-        }
         if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
             dispose();
             game.dispose();
@@ -92,16 +85,10 @@ public class MainMenuScreen implements Screen {
     public void dispose() {
         background.dispose();
         title.dispose();
-        startText.dispose();
     }
 
     private void renderText() {
         // TODO - Actually center the title on the screen
-        String startText = "Press ENTER to Start!";
-        if (game.isControllerConnected()) {
-            startText = "Press X to Start!";
-        }
-        title.draw(game.batch, "Java Dungeon", (camera.viewportWidth / 2) - 450, 550); // TODO - Replace 450 with font width
-        this.startText.draw(game.batch, startText, (camera.viewportWidth / 2) - 160, 250); // TODO - Replace 160 with font width
+        title.draw(game.batch, "YOU WIN!", (camera.viewportWidth / 2) - 450, 550); // TODO - Replace 450 with font width
     }
 }

@@ -57,7 +57,6 @@ public class Enemy extends Entity {
     }
 
     private void moveTowardsPlayer(int playerX, int playerY) {
-        System.out.println(getSpeed());
         if (playerX > x + 40) {
             x += getSpeed() * Gdx.graphics.getDeltaTime();
         }

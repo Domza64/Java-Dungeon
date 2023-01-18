@@ -21,8 +21,19 @@ public class BaseRoom {
      * When overriding must call super.onLoad();
      **/
     public void onLoad(JavaDungeonGame game, GameScreen screen) {
+        screen.setBackground(background.getTexture());
+
+        Sounds musicTheme = music;
+        if (musicTheme != null) {
+            game.soundManager.play(musicTheme);
+        }
+
         game.items = new Array<>(items);
         game.exits = new Array<>(exits);
         game.entities = new Array<>(entities);
+    }
+
+    public void update(JavaDungeonGame game, GameScreen screen) {
+
     }
 }
