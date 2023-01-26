@@ -23,7 +23,8 @@ public class SwordItem extends Item {
             super.onUse(game);
             for (Entity e : game.entities) {
                 if (e.getClass() == Enemy.class) {
-                    if (Vector2.dst(e.x, e.y, this.x, this.y) < 130) {
+                    if (Vector2.dst(e.x, e.y, game.player.x, game.player.y) < 130) {
+                        System.out.println("Whaaaaaa");
                         e.damage(power);
                     }
                 }
