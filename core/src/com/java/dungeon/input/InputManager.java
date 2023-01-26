@@ -30,16 +30,17 @@ public class InputManager {
         System.out.println("Controller disconnected");
     }
 
-    public void movePlayer(PlayerMoveDir moveDir) {
+    public void movePlayer(PlayerMoveDir moveDir, float speed) {
+        if (game.pause) return;
         Player player = game.player;
         int tempX = player.x;
         int tempY = player.y;
-        int speed = player.getSpeed();
+        int playerSpeed = player.getSpeed();
 
-        if (moveDir == PlayerMoveDir.LEFT) tempX -= speed * Gdx.graphics.getDeltaTime();
-        if (moveDir == PlayerMoveDir.RIGHT) tempX += speed * Gdx.graphics.getDeltaTime();
-        if (moveDir == PlayerMoveDir.UP) tempY += speed * Gdx.graphics.getDeltaTime();
-        if (moveDir == PlayerMoveDir.DOWN) tempY -= speed * Gdx.graphics.getDeltaTime();
+        if (moveDir == PlayerMoveDir.LEFT) tempX -= playerSpeed * Gdx.graphics.getDeltaTime() * speed;
+        if (moveDir == PlayerMoveDir.RIGHT) tempX += playerSpeed * Gdx.graphics.getDeltaTime() * speed;
+        if (moveDir == PlayerMoveDir.UP) tempY += playerSpeed * Gdx.graphics.getDeltaTime() * speed;
+        if (moveDir == PlayerMoveDir.DOWN) tempY -= playerSpeed * Gdx.graphics.getDeltaTime() * speed;
 
         // TODO - This checks if player is out of screen, need to rewrite this somewhere better
         if (tempX < 0) tempX = 0;
@@ -51,12 +52,16 @@ public class InputManager {
         player.y = tempY;
     }
 
-    public void checkKeyboardInput() {
+    public void checkInput() {
         KeyboardManager.checkInput(this);
+        if(game.isControllerConnected()) {
+            ControllerManager.checkAxis(this);
+            ControllerManager.checkDpad(this);
+        }
     }
 
-    public void useItem() {
-        game.player.useItem();
+    public boolean useItem() {
+        return game.player.useItem();
     }
 
     public void pause() {

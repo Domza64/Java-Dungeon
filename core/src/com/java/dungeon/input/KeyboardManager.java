@@ -8,9 +8,9 @@ public class KeyboardManager {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) inputManager.pause();
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) inputManager.useItem();
 
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) inputManager.movePlayer(PlayerMoveDir.LEFT);
-        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) inputManager.movePlayer(PlayerMoveDir.RIGHT);
-        if (Gdx.input.isKeyPressed(Input.Keys.UP)) inputManager.movePlayer(PlayerMoveDir.UP);
-        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) inputManager.movePlayer(PlayerMoveDir.DOWN);
+        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) inputManager.movePlayer(PlayerMoveDir.LEFT, 1f);
+        if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) inputManager.movePlayer(PlayerMoveDir.RIGHT, 1f);
+        if (Gdx.input.isKeyPressed(Input.Keys.UP)) inputManager.movePlayer(PlayerMoveDir.UP, 1f);
+        if (Gdx.input.isKeyPressed(Input.Keys.DOWN)) inputManager.movePlayer(PlayerMoveDir.DOWN, 1f);
     }
 }

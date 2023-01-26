@@ -23,7 +23,7 @@ public class JavaDungeonGame extends Game {
     private boolean controllerConnected;
     public boolean pause;
 
-    // TODO - these arrays probably shouldnt be public because encapsulation'n stuff
+    // TODO - these arrays probably shouldnt be public because encapsulation stuff
     public Array<ExitObject> exits;
     public Array<Item> items;
     public Array<Entity> entities;

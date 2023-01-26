@@ -6,30 +6,21 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
-import com.badlogic.gdx.utils.TimeUtils;
 import com.java.dungeon.JavaDungeonGame;
 import com.java.dungeon.gameObjects.item.Item;
-import com.java.dungeon.gameObjects.item.SwordItem;
-import com.java.dungeon.sounds.SoundEffects;
 
 public class Player extends Entity {
     private static final int FRAME_COLS = 4, FRAME_ROWS = 1;
     float stateTime;
-    private final Animation<TextureRegion> idleAnimation;
-    private final Animation<TextureRegion> walkAnimation;
+    private final Animation<TextureRegion> idleAnimation, walkAnimation;
     private final Texture walkTexture;
     private final Array<Item> inventory;
-    private boolean canUseItem;
-    private long lastItemUseTime;
 
     public Player(JavaDungeonGame game) {
         super(10, 300, new Texture(Gdx.files.internal("textures/objects/character_idle.png")), game); // TODO - Dispose texture
         walkTexture = new Texture(Gdx.files.internal("textures/objects/character_walk.png"));
-
         inventory = new Array<>();
-        lastItemUseTime = 0;
 
         int h = texture.getHeight() / FRAME_ROWS;
         int w = texture.getWidth() / FRAME_COLS;
@@ -46,7 +37,7 @@ public class Player extends Entity {
                 idleFrames[index++] = tmp[i][j];
             }
         }
-        idleAnimation = new Animation<>(1.0f, idleFrames);
+        idleAnimation = new Animation<>(2.0f, idleFrames);
 
         TextureRegion[][] tmp2 = TextureRegion.split(walkTexture, walkTexture.getWidth() / 2, walkTexture.getHeight());
         TextureRegion[] walkFrames = new TextureRegion[2];
@@ -78,14 +69,12 @@ public class Player extends Entity {
             if (currentFrame.isFlipX()) {
                 currentFrame.flip(true, false);
             }
-        }
-        else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
             currentFrame = walkAnimation.getKeyFrame(stateTime, true);
             if (!currentFrame.isFlipX()) {
                 currentFrame.flip(true, false);
             }
-        }
-        else {
+        } else {
             currentFrame = idleAnimation.getKeyFrame(stateTime, true);
         }
 
@@ -96,36 +85,31 @@ public class Player extends Entity {
         if (!inventory.isEmpty()) {
             Item item = inventory.get(0);
             batch.draw(item.getTexture(), x + 60, y + 25, item.width, item.height);
+
+            int tempNum = 1200;
+            for (Item i : inventory) {
+                batch.draw(i.getTexture(), tempNum, 720 - i.height - 25, i.width / 2f, i.height / 2f);
+                tempNum -= 25 + i.width / 2;
+            }
         }
         // -----------------------------------------------------
 
     }
 
-    public void useItem() {
-        if (canUseItem) {
-            if (!inventory.isEmpty()) {
-                Item item = inventory.get(0);
-                if(item.getClass() == SwordItem.class) {
-                    this.game.soundManager.playEffect(SoundEffects.SWORD_EFFECT);
-                    for (Entity e : game.entities) {
-                        if (e.getClass() == Enemy.class) {
-                            if (Vector2.dst(e.x, e.y, this.x, this.y) < 130) {
-                                e.damage(((SwordItem) item).power);
-                            }
-                        }
-                    }
-                }
-            }
-            canUseItem = false;
-            lastItemUseTime = TimeUtils.millis();
+    public boolean useItem() {
+        boolean hasUsedItem = false;
+
+        if (!inventory.isEmpty()) {
+            Item item = inventory.get(0);
+            hasUsedItem = true;
+            item.onUse(game);
         }
+
+        return hasUsedItem;
     }
 
     public void update() {
         stateTime += Gdx.graphics.getDeltaTime();
-        if (lastItemUseTime < TimeUtils.millis() - 1000) { // TODO - This is 1 second but should be different depending on item that is being used
-            canUseItem = true;
-        }
     }
 
     @Override

@@ -25,7 +25,7 @@ public class GameScreen implements Screen {
     private Texture background;
     private BaseRoom currentRoom;
 
-    // TODO - This is temp for testing it will be done in UI update
+    // TODO - playerHealthDisplay is temp for testing it will be done in UI update
     private final BitmapFont playerHealthDisplay;
 
     public GameScreen(final JavaDungeonGame game, Rooms room) {
@@ -45,7 +45,7 @@ public class GameScreen implements Screen {
     }
 
     private void update(float deltaTime) {
-        game.inputManager.checkKeyboardInput();
+        game.inputManager.checkInput();
         if (!game.pause) {
             checkCollision();
 
