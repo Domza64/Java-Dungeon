@@ -25,7 +25,7 @@ public class MainMenuScreen implements Screen {
     public MainMenuScreen(final JavaDungeonGame game) {
         this.game = game;
 
-        viewport = new FillViewport(1280, 720, new OrthographicCamera());
+        viewport = new FillViewport(1280, 720);
 
         startText = FontUtils.getFont(FontUtils.Fonts.MINECRAFT, 24, new Color(1.0f, 1.0f, 1.0f, 1.0f));
         title = FontUtils.getFont(FontUtils.Fonts.BITMGOTHIC, 150, new Color(0.85f, 0.8f, 0.7f, 1f));
@@ -47,25 +47,12 @@ public class MainMenuScreen implements Screen {
         viewport.apply(true);
         game.batch.setProjectionMatrix(viewport.getCamera().combined);
 
-        update(delta);
+        game.inputManager.checkInput();
 
         game.batch.begin();
         game.batch.draw(background, 0, 0, viewport.getWorldWidth(), viewport.getWorldHeight());
         renderText();
         game.batch.end();
-    }
-
-    private void update(float deltaTime) {
-        if (Gdx.input.isKeyPressed(Input.Keys.ENTER)) {
-            game.soundManager.stopPlaying();
-            game.start();
-            dispose();
-        }
-        if (Gdx.input.isKeyPressed(Input.Keys.ESCAPE)) {
-            dispose();
-            game.dispose();
-            Gdx.app.exit();
-        }
     }
 
     @Override

@@ -7,6 +7,7 @@ public class KeyboardManager {
     public static void checkInput(InputManager inputManager) {
         if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) inputManager.pause();
         if (Gdx.input.isKeyJustPressed(Input.Keys.E)) inputManager.useItem();
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ENTER)) inputManager.startGame();
 
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) inputManager.movePlayer(PlayerMoveDir.LEFT, 1f);
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) inputManager.movePlayer(PlayerMoveDir.RIGHT, 1f);

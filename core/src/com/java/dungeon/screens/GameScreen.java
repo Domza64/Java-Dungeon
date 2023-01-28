@@ -2,11 +2,13 @@ package com.java.dungeon.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.java.dungeon.FontUtils;
 import com.java.dungeon.JavaDungeonGame;
 import com.java.dungeon.Utils;
@@ -14,28 +16,24 @@ import com.java.dungeon.gameObjects.ExitObject;
 import com.java.dungeon.gameObjects.entity.Enemy;
 import com.java.dungeon.gameObjects.entity.Entity;
 import com.java.dungeon.gameObjects.item.Item;
-import com.java.dungeon.gameObjects.item.KeyItem;
 import com.java.dungeon.rooms.BaseRoom;
 import com.java.dungeon.rooms.Rooms;
 import com.java.dungeon.sounds.SoundEffects;
 
 public class GameScreen implements Screen {
     private final JavaDungeonGame game;
-    private final OrthographicCamera camera;
+    private final Viewport viewport;
     private Texture background;
     private BaseRoom currentRoom;
 
     // TODO - playerHealthDisplay is temp for testing it will be done in UI update
     private final BitmapFont playerHealthDisplay;
-
+    private final int GAME_HEIGHT = 720;
+    private final int GAME_WIDTH = 1280;
     public GameScreen(final JavaDungeonGame game, Rooms room) {
         this.game = game;
-
-        camera = new OrthographicCamera();
-        camera.setToOrtho(false, 1280, 720);
-
+        viewport = new ExtendViewport(GAME_WIDTH, GAME_HEIGHT);
         playerHealthDisplay = FontUtils.getFont(FontUtils.Fonts.BITMGOTHIC, 64, new Color(0.85f, 0.8f, 0.7f, 1f));
-
         loadRoom(room);
     }
 
@@ -69,15 +67,21 @@ public class GameScreen implements Screen {
 
     @Override
     public void render(float delta) {
-        ScreenUtils.clear(0, 0, 0.2f, 1);
-        camera.update();
-        game.batch.setProjectionMatrix(camera.combined);
+        ScreenUtils.clear(Color.BLACK);
+
+        viewport.apply(false);
+//        viewport.getCamera().position.set(new Vector2(game.player.x + ((float)game.player.width / 2), game.player.y + ((float)game.player.height / 2)), 1);
+        game.batch.setProjectionMatrix(viewport.getCamera().combined);
 
         update(delta);
 
+        float worldWidth = viewport.getWorldWidth();
+        float worldHeight = viewport.getWorldHeight();
+
         game.batch.begin();
         // Background
-        game.batch.draw(background, 0, 0, 1280, 720);
+//        game.batch.draw(background, (worldWidth - GAME_WIDTH) / 2, (worldHeight - GAME_HEIGHT) / 2, GAME_WIDTH, GAME_HEIGHT);
+        game.batch.draw(background, 0, 0, GAME_WIDTH, GAME_HEIGHT);
         // Player
         game.player.render(game.batch);
         // Exits
@@ -98,8 +102,10 @@ public class GameScreen implements Screen {
                 e.render(game.batch);
             }
         }
-        if (game.pause) game.batch.draw(new Texture(Gdx.files.internal("textures/ui/pause_menu.png")), 415,225, 450, 270);
+        if (game.pause) game.batch.draw(new Texture(Gdx.files.internal("textures/ui/pause_menu.png")), (viewport.getWorldWidth() / 2) - (450 / 2f), (viewport.getWorldHeight() / 2) - (270 / 2f), 450, 270);
 
+
+        // TEMP
         playerHealthDisplay.draw(game.batch, "Health: " + game.player.getHealth(), 50, 680);
 
         game.batch.end();
@@ -115,20 +121,6 @@ public class GameScreen implements Screen {
                         if (e.isUnlocked()) {
                             game.soundManager.playEffect(e.effect);
                             loadRoom(e.getLeadsTo());
-                        }
-                        else {
-                            boolean keyFound = false;
-                            for (Item i : game.player.getInventory()) {
-                                if (i.getClass() == KeyItem.class) {
-                                    if (game.entities.isEmpty()) { // TODO - this if is only TEMP for testing / basically need to kill enemy before entering
-                                        game.player.getInventory().removeValue(i, true);
-                                        e.unlock();
-                                        keyFound = true;
-                                        break;
-                                    }
-                                }
-                            }
-                            if (!keyFound) System.out.println("This exit is locked... Need to find a key first");
                         }
                     }
                     else {
@@ -152,12 +144,14 @@ public class GameScreen implements Screen {
     }
 
     @Override
-    public void resize(int width, int height) {}
+    public void resize(int width, int height) {
+        viewport.update(width, height, true);
+    }
 
     @Override
     public void pause() {
         game.soundManager.playEffect(SoundEffects.PAUSE_EFFECT);
-        game.soundManager.decreaseVolume(25);
+        game.soundManager.decreaseVolume(30);
         game.pause = true;
     }
 
@@ -171,8 +165,8 @@ public class GameScreen implements Screen {
     private void loadRoom(Rooms room) {
         currentRoom = Utils.loadRoomFromJson(Gdx.files.internal(room.getPath()));
 
-        this.game.player.x = (1280 / 2) - (this.game.player.width / 2);
-        this.game.player.y = (720 / 2) - (this.game.player.height / 2);
+        this.game.player.x = (GAME_WIDTH / 2) - (this.game.player.width / 2);
+        this.game.player.y = (GAME_HEIGHT / 2) - (this.game.player.height / 2);
 
         currentRoom.onLoad(game, this);
     }

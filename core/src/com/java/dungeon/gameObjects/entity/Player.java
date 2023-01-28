@@ -97,15 +97,9 @@ public class Player extends Entity {
     }
 
     public boolean useItem() {
-        boolean hasUsedItem = false;
-
-        if (!inventory.isEmpty()) {
-            Item item = inventory.get(0);
-            hasUsedItem = true;
-            item.onUse(game);
-        }
-
-        return hasUsedItem;
+        if (inventory.isEmpty()) return false;
+        Item item = inventory.get(0);
+        return item.onUse(game);
     }
 
     public void update() {

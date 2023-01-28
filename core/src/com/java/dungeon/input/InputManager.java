@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controllers;
 import com.java.dungeon.JavaDungeonGame;
 import com.java.dungeon.gameObjects.entity.Player;
+import com.java.dungeon.screens.MainMenuScreen;
 
 // PlayerMoveDir is just a TEMP SOLUTION!!!
 enum PlayerMoveDir {
@@ -30,6 +31,12 @@ public class InputManager {
         System.out.println("Controller disconnected");
     }
 
+    /**
+     *
+     * @param moveDir
+     * @param speed
+     * Speed range is from 0f to 1f
+     */
     public void movePlayer(PlayerMoveDir moveDir, float speed) {
         if (game.pause) return;
         Player player = game.player;
@@ -71,5 +78,13 @@ public class InputManager {
         else {
             game.pause();
         }
+    }
+
+    public boolean startGame() {
+        if (game.getScreen().getClass() == MainMenuScreen.class) {
+            game.start();
+            return true;
+        }
+        return false;
     }
 }

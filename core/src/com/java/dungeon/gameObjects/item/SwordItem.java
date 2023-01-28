@@ -18,18 +18,19 @@ public class SwordItem extends Item {
     }
 
     @Override
-    public void onUse(JavaDungeonGame game) {
+    public boolean onUse(JavaDungeonGame game) {
         if (super.canUse()) {
             super.onUse(game);
             for (Entity e : game.entities) {
                 if (e.getClass() == Enemy.class) {
                     if (Vector2.dst(e.x, e.y, game.player.x, game.player.y) < 130) {
-                        System.out.println("Whaaaaaa");
                         e.damage(power);
                     }
                 }
             }
             game.soundManager.playEffect(SoundEffects.SWORD_EFFECT);
+            return true;
         }
+        return false;
     }
 }

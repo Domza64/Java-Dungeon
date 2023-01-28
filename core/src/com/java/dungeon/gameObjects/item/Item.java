@@ -20,11 +20,9 @@ public abstract class Item extends GameObject {
         return texture;
     }
 
-    /**
-     * MUST!!! call super.onUse(); when overriding
-     **/
-    public void onUse(JavaDungeonGame game) {;
+    public boolean onUse(JavaDungeonGame game) {
         timeSinceLastUse = TimeUtils.millis();
+        return true;
     }
 
     protected boolean canUse() {

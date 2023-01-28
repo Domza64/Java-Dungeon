@@ -26,8 +26,12 @@ public class ControllerManager {
             @Override
             public boolean buttonDown(Controller controller, int buttonCode) {
                 if (buttonCode == controller.getMapping().buttonA) {
-                    if (inputManager.useItem()) {
-                        controller.startVibration(200, 0.4f);
+                    // Calls start game, that returns boolean if it returns true game is already started,
+                    // and player can use item, else it starts the game and doesn't use item
+                    if (!inputManager.startGame()) {
+                        if (inputManager.useItem()) {
+                            controller.startVibration(100, 0.2f);
+                        }
                     }
                 }
                 if (buttonCode == controller.getMapping().buttonStart) {
@@ -62,7 +66,11 @@ public class ControllerManager {
             inputManager.movePlayer(PlayerMoveDir.LEFT, -value);
         } else if (value > CONTROLLER_DEADZONE) inputManager.movePlayer(PlayerMoveDir.RIGHT, value);
     }
+
     public static void checkDpad(InputManager inputManager) {
-        System.out.println(Controllers.getCurrent().getMapping().buttonDpadLeft);
+        if (Controllers.getCurrent().getButton(Controllers.getCurrent().getMapping().buttonDpadDown)) inputManager.movePlayer(PlayerMoveDir.DOWN, 1f);
+        if (Controllers.getCurrent().getButton(Controllers.getCurrent().getMapping().buttonDpadLeft)) inputManager.movePlayer(PlayerMoveDir.LEFT, 1f);
+        if (Controllers.getCurrent().getButton(Controllers.getCurrent().getMapping().buttonDpadUp)) inputManager.movePlayer(PlayerMoveDir.UP, 1f);
+        if (Controllers.getCurrent().getButton(Controllers.getCurrent().getMapping().buttonDpadRight)) inputManager.movePlayer(PlayerMoveDir.RIGHT, 1f);
     }
 }

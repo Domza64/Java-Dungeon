@@ -2,12 +2,14 @@ package com.java.dungeon;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.java.dungeon.gameObjects.ExitObject;
 import com.java.dungeon.gameObjects.entity.Entity;
 import com.java.dungeon.gameObjects.entity.Player;
 import com.java.dungeon.gameObjects.item.Item;
+import com.java.dungeon.input.ControllerManager;
 import com.java.dungeon.input.InputManager;
 import com.java.dungeon.rooms.Rooms;
 import com.java.dungeon.screens.GameScreen;
@@ -36,7 +38,7 @@ public class JavaDungeonGame extends Game {
         player = new Player(this);
         this.setScreen(new MainMenuScreen(this));
         inputManager = new InputManager(this);
-        controllerConnected = false;
+        controllerConnected = Controllers.getCurrent() != null;
     }
 
     public void render() {
@@ -61,6 +63,7 @@ public class JavaDungeonGame extends Game {
     }
 
     public void start() {
+        this.screen.dispose();
         player = new Player(this);
         changeScreen(new GameScreen(this, Rooms.ROOM_1));
     }
