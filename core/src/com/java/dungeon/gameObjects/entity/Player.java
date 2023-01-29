@@ -6,22 +6,28 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.utils.Array;
+import com.java.dungeon.Inventory;
 import com.java.dungeon.JavaDungeonGame;
+import com.java.dungeon.PlayerMoveDirection;
 import com.java.dungeon.gameObjects.item.Item;
 
 public class Player extends Entity {
     private static final int FRAME_COLS = 4, FRAME_ROWS = 1;
+    public final int INVENTORY_SIZE = 4;
     float stateTime;
     private final Animation<TextureRegion> idleAnimation, walkAnimation;
     private final Texture walkTexture;
-    private final Array<Item> inventory;
+    private final Inventory inventory;
+    public PlayerMoveDirection playerMoveDirection;
+    private int selectedSlot;
 
     public Player(JavaDungeonGame game) {
         super(10, 300, new Texture(Gdx.files.internal("textures/objects/character_idle.png")), game); // TODO - Dispose texture
         walkTexture = new Texture(Gdx.files.internal("textures/objects/character_walk.png"));
-        inventory = new Array<>();
+        inventory = new Inventory(INVENTORY_SIZE);
+        playerMoveDirection = PlayerMoveDirection.IDLE;
 
+        selectedSlot = 0;
         int h = texture.getHeight() / FRAME_ROWS;
         int w = texture.getWidth() / FRAME_COLS;
         this.x = 1280 / 2 - h / 2;
@@ -63,13 +69,36 @@ public class Player extends Entity {
 
     @Override
     public void render(Batch batch) {
+        // Render player
+        batch.draw(getCurrentFrame(), x, y, width, height);
+
+        // Render selected item in players hand
+        Item item = inventory.getItem(selectedSlot);
+        if (item != null) {
+            batch.draw(item.getTexture(), x + 60, y + 25, item.width, item.height);
+        }
+
+
+        // JUST TEMP FOR FUN -----------------------------------
+        // Actually in future this will display selected slot but slot selection will be added with UI update
+        // Render all items in inventory top-right on screen
+        int tempNum = 1200;
+        for (Item i : inventory.getInventory()) {
+            if (i == null) continue;
+            batch.draw(i.getTexture(), tempNum, 720 - i.height - 25, i.width / 2f, i.height / 2f);
+            tempNum -= 25 + i.width / 2;
+        }
+        // -----------------------------------------------------
+    }
+
+    private TextureRegion getCurrentFrame() {
         TextureRegion currentFrame;
-        if (Gdx.input.isKeyPressed(Input.Keys.LEFT)) {
+        if (playerMoveDirection == PlayerMoveDirection.LEFT) {
             currentFrame = walkAnimation.getKeyFrame(stateTime, true);
             if (currentFrame.isFlipX()) {
                 currentFrame.flip(true, false);
             }
-        } else if (Gdx.input.isKeyPressed(Input.Keys.RIGHT)) {
+        } else if (playerMoveDirection == PlayerMoveDirection.RIGHT) {
             currentFrame = walkAnimation.getKeyFrame(stateTime, true);
             if (!currentFrame.isFlipX()) {
                 currentFrame.flip(true, false);
@@ -77,28 +106,12 @@ public class Player extends Entity {
         } else {
             currentFrame = idleAnimation.getKeyFrame(stateTime, true);
         }
-
-        batch.draw(currentFrame, x, y, width, height);
-
-        // JUST TEMP FOR FUN -----------------------------------
-        // Actually in future this will display selected slot but slot selection will be added with UI update
-        if (!inventory.isEmpty()) {
-            Item item = inventory.get(0);
-            batch.draw(item.getTexture(), x + 60, y + 25, item.width, item.height);
-
-            int tempNum = 1200;
-            for (Item i : inventory) {
-                batch.draw(i.getTexture(), tempNum, 720 - i.height - 25, i.width / 2f, i.height / 2f);
-                tempNum -= 25 + i.width / 2;
-            }
-        }
-        // -----------------------------------------------------
-
+        return currentFrame;
     }
 
     public boolean useItem() {
-        if (inventory.isEmpty()) return false;
-        Item item = inventory.get(0);
+        Item item = inventory.getItem(selectedSlot);
+        if (item == null) return false;
         return item.onUse(game);
     }
 
@@ -109,11 +122,24 @@ public class Player extends Entity {
     @Override
     public void damage(int amount) {
         super.damage(amount);
-        idleAnimation.setFrameDuration(Math.max(idleAnimation.getFrameDuration() - 0.15f, 0.05f)); // This is just temp test for fun not actual implementation
     }
 
-    public Array<Item> getInventory() {
-        return inventory;
+    public int getSelectedSlot() {
+        return selectedSlot;
+    }
+
+    // TODO - addItem and removeItem are temp solution
+    public boolean addItem(Item item) {
+        return inventory.addItem(item);
+    }
+    public void removeItem(Item item) {
+        inventory.removeItem(item);
+    }
+
+    public void selectSlot(int slot) {
+        if (slot < INVENTORY_SIZE) {
+            selectedSlot = slot;
+        }
     }
 
     public void dispose() {

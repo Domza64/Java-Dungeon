@@ -21,7 +21,7 @@ public class KeyItem extends Item {
                 if (e.isUnlocked()) return false;
                 e.unlock();
                 game.soundManager.playEffect(SoundEffects.GUITAR_EFFECT);
-                game.player.getInventory().removeValue(this, true);
+                game.player.removeItem(this);
                 return true;
             }
         }

@@ -3,6 +3,7 @@ package com.java.dungeon.input;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
+import com.java.dungeon.PlayerMoveDirection;
 
 public class ControllerManager {
     InputManager inputManager;
@@ -37,6 +38,12 @@ public class ControllerManager {
                 if (buttonCode == controller.getMapping().buttonStart) {
                     inputManager.pause();
                 }
+                if (buttonCode == controller.getMapping().buttonL1) {
+                    inputManager.changeSlot(false);
+                }
+                if (buttonCode == controller.getMapping().buttonR1) {
+                    inputManager.changeSlot(true);
+                }
                 return false;
             }
 
@@ -57,20 +64,20 @@ public class ControllerManager {
 
         float value = Controllers.getCurrent().getAxis(1);
         if (value < -CONTROLLER_DEADZONE) {
-            inputManager.movePlayer(PlayerMoveDir.UP, -value);
-        } else if (value > CONTROLLER_DEADZONE) inputManager.movePlayer(PlayerMoveDir.DOWN, value);
+            inputManager.movePlayer(PlayerMoveDirection.UP, -value);
+        } else if (value > CONTROLLER_DEADZONE) inputManager.movePlayer(PlayerMoveDirection.DOWN, value);
 
 
         value = Controllers.getCurrent().getAxis(0);
         if (value < -CONTROLLER_DEADZONE) {
-            inputManager.movePlayer(PlayerMoveDir.LEFT, -value);
-        } else if (value > CONTROLLER_DEADZONE) inputManager.movePlayer(PlayerMoveDir.RIGHT, value);
+            inputManager.movePlayer(PlayerMoveDirection.LEFT, -value);
+        } else if (value > CONTROLLER_DEADZONE) inputManager.movePlayer(PlayerMoveDirection.RIGHT, value);
     }
 
     public static void checkDpad(InputManager inputManager) {
-        if (Controllers.getCurrent().getButton(Controllers.getCurrent().getMapping().buttonDpadDown)) inputManager.movePlayer(PlayerMoveDir.DOWN, 1f);
-        if (Controllers.getCurrent().getButton(Controllers.getCurrent().getMapping().buttonDpadLeft)) inputManager.movePlayer(PlayerMoveDir.LEFT, 1f);
-        if (Controllers.getCurrent().getButton(Controllers.getCurrent().getMapping().buttonDpadUp)) inputManager.movePlayer(PlayerMoveDir.UP, 1f);
-        if (Controllers.getCurrent().getButton(Controllers.getCurrent().getMapping().buttonDpadRight)) inputManager.movePlayer(PlayerMoveDir.RIGHT, 1f);
+        if (Controllers.getCurrent().getButton(Controllers.getCurrent().getMapping().buttonDpadDown)) inputManager.movePlayer(PlayerMoveDirection.DOWN, 1f);
+        if (Controllers.getCurrent().getButton(Controllers.getCurrent().getMapping().buttonDpadLeft)) inputManager.movePlayer(PlayerMoveDirection.LEFT, 1f);
+        if (Controllers.getCurrent().getButton(Controllers.getCurrent().getMapping().buttonDpadUp)) inputManager.movePlayer(PlayerMoveDirection.UP, 1f);
+        if (Controllers.getCurrent().getButton(Controllers.getCurrent().getMapping().buttonDpadRight)) inputManager.movePlayer(PlayerMoveDirection.RIGHT, 1f);
     }
 }

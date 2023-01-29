@@ -133,11 +133,10 @@ public class GameScreen implements Screen {
         if (!game.items.isEmpty()) {
             for (Item i : game.items) {
                 if (game.player.intersects(i)) {
-                    if (game.items.removeValue(i, true)) {
-                        game.player.getInventory().add(i);
+                    if (game.player.addItem(i)) {
+                        game.items.removeValue(i, true);
                         game.soundManager.playEffect(SoundEffects.POP_EFFECT);
                     }
-                    else System.err.println("Item not removed???");
                 }
             }
         }

@@ -10,6 +10,8 @@ import com.java.dungeon.FontUtils;
 import com.java.dungeon.JavaDungeonGame;
 import com.java.dungeon.sounds.SoundEffects;
 
+import java.util.Vector;
+
 public class Enemy extends Entity {
     private boolean canAttack;
     public boolean shouldDie;
