@@ -1,14 +1,13 @@
-package com.java.dungeon.gameObjects.entity;
+package com.java.dungeon.gameObjects.entity.player;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.java.dungeon.Inventory;
 import com.java.dungeon.JavaDungeonGame;
-import com.java.dungeon.PlayerMoveDirection;
+import com.java.dungeon.gameObjects.entity.Entity;
 import com.java.dungeon.gameObjects.item.Item;
 
 public class Player extends Entity {
@@ -18,14 +17,16 @@ public class Player extends Entity {
     private final Animation<TextureRegion> idleAnimation, walkAnimation;
     private final Texture walkTexture;
     private final Inventory inventory;
-    public PlayerMoveDirection playerMoveDirection;
+    public PlayerVerticalMovment playerVerticalMovment;
+    public PlayerHorizontalMovment playerHorizontalMovment;
     private int selectedSlot;
 
     public Player(JavaDungeonGame game) {
         super(10, 300, new Texture(Gdx.files.internal("textures/objects/character_idle.png")), game); // TODO - Dispose texture
         walkTexture = new Texture(Gdx.files.internal("textures/objects/character_walk.png"));
         inventory = new Inventory(INVENTORY_SIZE);
-        playerMoveDirection = PlayerMoveDirection.IDLE;
+        playerHorizontalMovment = PlayerHorizontalMovment.IDLE;
+        playerVerticalMovment = PlayerVerticalMovment.IDLE;
 
         selectedSlot = 0;
         int h = texture.getHeight() / FRAME_ROWS;
@@ -93,16 +94,18 @@ public class Player extends Entity {
 
     private TextureRegion getCurrentFrame() {
         TextureRegion currentFrame;
-        if (playerMoveDirection == PlayerMoveDirection.LEFT) {
+        if (playerHorizontalMovment == PlayerHorizontalMovment.LEFT) {
             currentFrame = walkAnimation.getKeyFrame(stateTime, true);
             if (currentFrame.isFlipX()) {
                 currentFrame.flip(true, false);
             }
-        } else if (playerMoveDirection == PlayerMoveDirection.RIGHT) {
+        } else if (playerHorizontalMovment == PlayerHorizontalMovment.RIGHT) {
             currentFrame = walkAnimation.getKeyFrame(stateTime, true);
             if (!currentFrame.isFlipX()) {
                 currentFrame.flip(true, false);
             }
+        } else if (playerVerticalMovment != PlayerVerticalMovment.IDLE) {
+            currentFrame = walkAnimation.getKeyFrame(stateTime, true);
         } else {
             currentFrame = idleAnimation.getKeyFrame(stateTime, true);
         }

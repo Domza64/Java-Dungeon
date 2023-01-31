@@ -3,10 +3,12 @@ package com.java.dungeon.input;
 import com.badlogic.gdx.controllers.Controller;
 import com.badlogic.gdx.controllers.ControllerListener;
 import com.badlogic.gdx.controllers.Controllers;
-import com.java.dungeon.PlayerMoveDirection;
+import com.java.dungeon.gameObjects.entity.player.PlayerHorizontalMovment;
+import com.java.dungeon.gameObjects.entity.player.PlayerVerticalMovment;
 
 public class ControllerManager {
     InputManager inputManager;
+    private final static float CONTROLLER_DEADZONE = 0.1f;
 
     public ControllerManager(InputManager inputManager) {
         this.inputManager = inputManager;
@@ -59,25 +61,46 @@ public class ControllerManager {
         };
     }
 
-    public static void checkAxis(InputManager inputManager) {
-        float CONTROLLER_DEADZONE = 0.1f;
-
+    public static boolean checkAxis(InputManager inputManager) {
+        boolean isMoving = false;
         float value = Controllers.getCurrent().getAxis(1);
         if (value < -CONTROLLER_DEADZONE) {
-            inputManager.movePlayer(PlayerMoveDirection.UP, -value);
-        } else if (value > CONTROLLER_DEADZONE) inputManager.movePlayer(PlayerMoveDirection.DOWN, value);
-
+            isMoving = true;
+            inputManager.movePlayer(PlayerVerticalMovment.UP, null, -value);
+        } else if (value > CONTROLLER_DEADZONE) {
+            isMoving = true;
+            inputManager.movePlayer(PlayerVerticalMovment.DOWN, null, value);
+        }
 
         value = Controllers.getCurrent().getAxis(0);
         if (value < -CONTROLLER_DEADZONE) {
-            inputManager.movePlayer(PlayerMoveDirection.LEFT, -value);
-        } else if (value > CONTROLLER_DEADZONE) inputManager.movePlayer(PlayerMoveDirection.RIGHT, value);
+            isMoving = true;
+            inputManager.movePlayer(null, PlayerHorizontalMovment.LEFT, -value);
+        } else if (value > CONTROLLER_DEADZONE) {
+            isMoving = true;
+            inputManager.movePlayer(null, PlayerHorizontalMovment.RIGHT, value);
+        }
+        return isMoving;
     }
 
-    public static void checkDpad(InputManager inputManager) {
-        if (Controllers.getCurrent().getButton(Controllers.getCurrent().getMapping().buttonDpadDown)) inputManager.movePlayer(PlayerMoveDirection.DOWN, 1f);
-        if (Controllers.getCurrent().getButton(Controllers.getCurrent().getMapping().buttonDpadLeft)) inputManager.movePlayer(PlayerMoveDirection.LEFT, 1f);
-        if (Controllers.getCurrent().getButton(Controllers.getCurrent().getMapping().buttonDpadUp)) inputManager.movePlayer(PlayerMoveDirection.UP, 1f);
-        if (Controllers.getCurrent().getButton(Controllers.getCurrent().getMapping().buttonDpadRight)) inputManager.movePlayer(PlayerMoveDirection.RIGHT, 1f);
+    public static boolean checkDpad(InputManager inputManager) {
+        boolean isMoving = false;
+        if (Controllers.getCurrent().getButton(Controllers.getCurrent().getMapping().buttonDpadDown)) {
+            isMoving = true;
+            inputManager.movePlayer(PlayerVerticalMovment.DOWN, null, 1f);
+        }
+        if (Controllers.getCurrent().getButton(Controllers.getCurrent().getMapping().buttonDpadLeft)) {
+            isMoving = true;
+            inputManager.movePlayer(null, PlayerHorizontalMovment.LEFT, 1f);
+        }
+        if (Controllers.getCurrent().getButton(Controllers.getCurrent().getMapping().buttonDpadUp)) {
+            isMoving = true;
+            inputManager.movePlayer(PlayerVerticalMovment.UP, null, 1f);
+        }
+        if (Controllers.getCurrent().getButton(Controllers.getCurrent().getMapping().buttonDpadRight)) {
+            isMoving = true;
+            inputManager.movePlayer(null, PlayerHorizontalMovment.RIGHT, 1f);
+        }
+        return isMoving;
     }
 }

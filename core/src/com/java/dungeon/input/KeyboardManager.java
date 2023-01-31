@@ -2,7 +2,8 @@ package com.java.dungeon.input;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.java.dungeon.PlayerMoveDirection;
+import com.java.dungeon.gameObjects.entity.player.PlayerHorizontalMovment;
+import com.java.dungeon.gameObjects.entity.player.PlayerVerticalMovment;
 
 public class KeyboardManager {
     public static boolean checkInput(InputManager inputManager) {
@@ -20,19 +21,19 @@ public class KeyboardManager {
         boolean isMoving = false;
         if (Gdx.input.isKeyPressed(Input.Keys.LEFT) || Gdx.input.isKeyPressed(Input.Keys.A)) {
             isMoving = true;
-            inputManager.movePlayer(PlayerMoveDirection.LEFT, 1f);
+            inputManager.movePlayer(null, PlayerHorizontalMovment.LEFT, 1f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.RIGHT) || Gdx.input.isKeyPressed(Input.Keys.D)) {
             isMoving = true;
-            inputManager.movePlayer(PlayerMoveDirection.RIGHT, 1f);
+            inputManager.movePlayer(null, PlayerHorizontalMovment.RIGHT, 1f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.UP) || Gdx.input.isKeyPressed(Input.Keys.W)) {
             isMoving = true;
-            inputManager.movePlayer(PlayerMoveDirection.UP, 1f);
+            inputManager.movePlayer(PlayerVerticalMovment.UP, null, 1f);
         }
         if (Gdx.input.isKeyPressed(Input.Keys.DOWN) || Gdx.input.isKeyPressed(Input.Keys.S)) {
             isMoving = true;
-            inputManager.movePlayer(PlayerMoveDirection.DOWN, 1f);
+            inputManager.movePlayer(PlayerVerticalMovment.DOWN, null, 1f);
         }
         return isMoving;
     }

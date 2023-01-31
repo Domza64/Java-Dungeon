@@ -2,7 +2,6 @@ package com.java.dungeon.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.controllers.Controllers;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -16,7 +15,7 @@ import com.java.dungeon.gameObjects.ExitObject;
 import com.java.dungeon.gameObjects.entity.Enemy;
 import com.java.dungeon.gameObjects.entity.Entity;
 import com.java.dungeon.gameObjects.item.Item;
-import com.java.dungeon.rooms.BaseRoom;
+import com.java.dungeon.rooms.Room;
 import com.java.dungeon.rooms.Rooms;
 import com.java.dungeon.sounds.SoundEffects;
 
@@ -24,15 +23,13 @@ public class GameScreen implements Screen {
     private final JavaDungeonGame game;
     private final Viewport viewport;
     private Texture background;
-    private BaseRoom currentRoom;
+    private Room currentRoom;
 
     // TODO - playerHealthDisplay is temp for testing it will be done in UI update
     private final BitmapFont playerHealthDisplay;
-    private final int GAME_HEIGHT = 720;
-    private final int GAME_WIDTH = 1280;
     public GameScreen(final JavaDungeonGame game, Rooms room) {
         this.game = game;
-        viewport = new ExtendViewport(GAME_WIDTH, GAME_HEIGHT);
+        viewport = new ExtendViewport(game.GAME_WIDTH, game.GAME_HEIGHT);
         playerHealthDisplay = FontUtils.getFont(FontUtils.Fonts.BITMGOTHIC, 64, new Color(0.85f, 0.8f, 0.7f, 1f));
         loadRoom(room);
     }
@@ -81,28 +78,31 @@ public class GameScreen implements Screen {
         game.batch.begin();
         // Background
 //        game.batch.draw(background, (worldWidth - GAME_WIDTH) / 2, (worldHeight - GAME_HEIGHT) / 2, GAME_WIDTH, GAME_HEIGHT);
-        game.batch.draw(background, 0, 0, GAME_WIDTH, GAME_HEIGHT);
+        game.batch.draw(background, 0, 0, game.GAME_WIDTH, game.GAME_HEIGHT);
         // Player
         game.player.render(game.batch);
-        // Exits
+        // Render Exits
         if (!game.exits.isEmpty()) {
             for (ExitObject e : game.exits) {
                 game.batch.draw(ExitObject.texture, e.x, e.y, e.width, e.height);
             }
         }
-        // Items
+        // Render Items
         if (!game.items.isEmpty()) {
             for (Item i : game.items) {
                 game.batch.draw(i.getTexture(), i.x, i.y, i.width, i.height);
             }
         }
-        // Entities
+        // Render Entities
         if (!game.entities.isEmpty()) {
             for (Entity e : game.entities) {
                 e.render(game.batch);
             }
         }
-        if (game.pause) game.batch.draw(new Texture(Gdx.files.internal("textures/ui/pause_menu.png")), (viewport.getWorldWidth() / 2) - (450 / 2f), (viewport.getWorldHeight() / 2) - (270 / 2f), 450, 270);
+        if (game.pause) {
+            game.batch.draw(new Texture(Gdx.files.internal("textures/ui/pause_menu.png")),
+                    (viewport.getWorldWidth() / 2) - (450 / 2f), (viewport.getWorldHeight() / 2) - (270 / 2f), 450, 270);
+        }
 
 
         // TEMP
@@ -164,8 +164,8 @@ public class GameScreen implements Screen {
     private void loadRoom(Rooms room) {
         currentRoom = Utils.loadRoomFromJson(Gdx.files.internal(room.getPath()));
 
-        this.game.player.x = (GAME_WIDTH / 2) - (this.game.player.width / 2);
-        this.game.player.y = (GAME_HEIGHT / 2) - (this.game.player.height / 2);
+        this.game.player.x = (game.GAME_WIDTH / 2) - (this.game.player.width / 2);
+        this.game.player.y = (game.GAME_HEIGHT  / 2) - (this.game.player.height / 2);
 
         currentRoom.onLoad(game, this);
     }

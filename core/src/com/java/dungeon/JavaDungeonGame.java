@@ -7,9 +7,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.utils.Array;
 import com.java.dungeon.gameObjects.ExitObject;
 import com.java.dungeon.gameObjects.entity.Entity;
-import com.java.dungeon.gameObjects.entity.Player;
+import com.java.dungeon.gameObjects.entity.player.Player;
 import com.java.dungeon.gameObjects.item.Item;
-import com.java.dungeon.input.ControllerManager;
 import com.java.dungeon.input.InputManager;
 import com.java.dungeon.rooms.Rooms;
 import com.java.dungeon.screens.GameScreen;
@@ -24,6 +23,8 @@ public class JavaDungeonGame extends Game {
     public Player player;
     private boolean controllerConnected;
     public boolean pause;
+    public final int GAME_WIDTH = 1280;
+    public final int GAME_HEIGHT = 720;
 
     // TODO - these arrays probably shouldnt be public because encapsulation stuff
     public Array<ExitObject> exits;

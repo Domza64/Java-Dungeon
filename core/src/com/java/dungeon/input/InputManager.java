@@ -3,8 +3,9 @@ package com.java.dungeon.input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controllers;
 import com.java.dungeon.JavaDungeonGame;
-import com.java.dungeon.PlayerMoveDirection;
-import com.java.dungeon.gameObjects.entity.Player;
+import com.java.dungeon.gameObjects.entity.player.Player;
+import com.java.dungeon.gameObjects.entity.player.PlayerHorizontalMovment;
+import com.java.dungeon.gameObjects.entity.player.PlayerVerticalMovment;
 import com.java.dungeon.screens.MainMenuScreen;
 
 public class InputManager {
@@ -26,23 +27,23 @@ public class InputManager {
     }
 
     /**
-     *
      * @param speed
      * Speed range is from 0f to 1f
      */
-    public void movePlayer(PlayerMoveDirection playerMoveDirection, float speed) {
+    public void movePlayer(PlayerVerticalMovment playerVerticalMovment, PlayerHorizontalMovment playerHorizontalMovment, float speed) {
         if (game.pause) return;
         Player player = game.player;
         int tempX = player.x;
         int tempY = player.y;
         int playerSpeed = player.getSpeed();
 
-        player.playerMoveDirection = playerMoveDirection;
+        if (playerHorizontalMovment != null) player.playerHorizontalMovment = playerHorizontalMovment;
+        if (playerVerticalMovment != null) player.playerVerticalMovment = playerVerticalMovment;
 
-        if (playerMoveDirection == PlayerMoveDirection.LEFT) tempX -= playerSpeed * Gdx.graphics.getDeltaTime() * speed;
-        if (playerMoveDirection == PlayerMoveDirection.RIGHT) tempX += playerSpeed * Gdx.graphics.getDeltaTime() * speed;
-        if (playerMoveDirection == PlayerMoveDirection.UP) tempY += playerSpeed * Gdx.graphics.getDeltaTime() * speed;
-        if (playerMoveDirection == PlayerMoveDirection.DOWN) tempY -= playerSpeed * Gdx.graphics.getDeltaTime() * speed;
+        if (playerHorizontalMovment == PlayerHorizontalMovment.LEFT) tempX -= playerSpeed * Gdx.graphics.getDeltaTime() * speed;
+        if (playerHorizontalMovment == PlayerHorizontalMovment.RIGHT) tempX += playerSpeed * Gdx.graphics.getDeltaTime() * speed;
+        if (playerVerticalMovment == PlayerVerticalMovment.UP) tempY += playerSpeed * Gdx.graphics.getDeltaTime() * speed;
+        if (playerVerticalMovment == PlayerVerticalMovment.DOWN) tempY -= playerSpeed * Gdx.graphics.getDeltaTime() * speed;
 
         // TODO - This checks if player is out of screen, need to rewrite this somewhere better
         if (tempX < 0) tempX = 0;
@@ -57,10 +58,12 @@ public class InputManager {
     public void checkInput() {
         boolean isMoving = KeyboardManager.checkInput(this);
         if(game.isControllerConnected()) {
-            ControllerManager.checkAxis(this);
-            ControllerManager.checkDpad(this);
+            isMoving = ControllerManager.checkDpad(this) || ControllerManager.checkAxis(this);
         }
-        if (isMoving) game.player.playerMoveDirection = PlayerMoveDirection.IDLE;
+        if (!isMoving) {
+            game.player.playerVerticalMovment = PlayerVerticalMovment.IDLE;
+            game.player.playerHorizontalMovment = PlayerHorizontalMovment.IDLE;
+        }
     }
 
     public boolean useItem() {
@@ -81,7 +84,6 @@ public class InputManager {
     }
 
     /**
-     *
      * @param upOrDown
      * True - Go up one slot, False - Go down one slot
      */

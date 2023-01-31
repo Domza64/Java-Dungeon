@@ -9,7 +9,7 @@ import com.java.dungeon.gameObjects.item.Item;
 import com.java.dungeon.screens.GameScreen;
 import com.java.dungeon.sounds.Sounds;
 
-public class BaseRoom {
+public class Room {
     public Sounds music;
     public Backgrounds background;
     public int number;
