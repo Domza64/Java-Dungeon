@@ -7,11 +7,14 @@ import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.java.dungeon.Inventory;
 import com.java.dungeon.JavaDungeonGame;
+import com.java.dungeon.UiManager;
 import com.java.dungeon.gameObjects.entity.Entity;
 import com.java.dungeon.gameObjects.item.Item;
 
+import java.sql.Array;
+
 public class Player extends Entity {
-    private static final int FRAME_COLS = 4, FRAME_ROWS = 1;
+    private static final int FRAME_COLS = 4, FRAME_ROWS = 1, HEALTH = 10;
     public final int INVENTORY_SIZE = 4;
     float stateTime;
     private final Animation<TextureRegion> idleAnimation, walkAnimation;
@@ -22,7 +25,7 @@ public class Player extends Entity {
     private int selectedSlot;
 
     public Player(JavaDungeonGame game) {
-        super(10, 300, new Texture(Gdx.files.internal("textures/objects/character_idle.png")), game); // TODO - Dispose texture
+        super(HEALTH, 300, new Texture(Gdx.files.internal("textures/objects/character_idle.png")), game); // TODO - Dispose texture
         walkTexture = new Texture(Gdx.files.internal("textures/objects/character_walk.png"));
         inventory = new Inventory(INVENTORY_SIZE);
         playerHorizontalMovment = PlayerHorizontalMovment.IDLE;
@@ -56,6 +59,7 @@ public class Player extends Entity {
         }
         walkAnimation = new Animation<>(0.1f, walkFrames);
         stateTime = 0f;
+        UiManager.updatePlayerHealth(getHealth());
     }
 
     @Override
@@ -72,24 +76,11 @@ public class Player extends Entity {
     public void render(Batch batch) {
         // Render player
         batch.draw(getCurrentFrame(), x, y, width, height);
-
         // Render selected item in players hand
         Item item = inventory.getItem(selectedSlot);
         if (item != null) {
             batch.draw(item.getTexture(), x + 60, y + 25, item.width, item.height);
         }
-
-
-        // JUST TEMP FOR FUN -----------------------------------
-        // Actually in future this will display selected slot but slot selection will be added with UI update
-        // Render all items in inventory top-right on screen
-        int tempNum = 1200;
-        for (Item i : inventory.getInventory()) {
-            if (i == null) continue;
-            batch.draw(i.getTexture(), tempNum, 720 - i.height - 25, i.width / 2f, i.height / 2f);
-            tempNum -= 25 + i.width / 2;
-        }
-        // -----------------------------------------------------
     }
 
     private TextureRegion getCurrentFrame() {
@@ -125,6 +116,18 @@ public class Player extends Entity {
     @Override
     public void damage(int amount) {
         super.damage(amount);
+        UiManager.updatePlayerHealth(getHealth());
+    }
+
+    @Override
+    public void heal(int amount) {
+        if (amount > 0) {
+            health += amount;
+        }
+        if (health > HEALTH) {
+            health = HEALTH;
+        }
+        UiManager.updatePlayerHealth(getHealth());
     }
 
     public int getSelectedSlot() {
@@ -133,16 +136,37 @@ public class Player extends Entity {
 
     // TODO - addItem and removeItem are temp solution
     public boolean addItem(Item item) {
-        return inventory.addItem(item);
+        boolean bool = inventory.addItem(item);
+        updateEquippedSlot();
+        return bool;
     }
     public void removeItem(Item item) {
         inventory.removeItem(item);
+        updateEquippedSlot();
+    }
+
+    private void updateEquippedSlot() {
+        Item item = getSlot(selectedSlot);
+        if (item != null) {
+            UiManager.updateEquippedItem(item.getTexture());
+        }
     }
 
     public void selectSlot(int slot) {
         if (slot < INVENTORY_SIZE) {
             selectedSlot = slot;
+            Item item = inventory.getItem(slot);
+            if (item != null) {
+                UiManager.updateEquippedItem(item.getTexture());
+            }
+            else {
+                UiManager.updateEquippedItem(null);
+            }
         }
+    }
+
+    public Item getSlot(int slot) {
+        return inventory.getItem(slot);
     }
 
     public void dispose() {

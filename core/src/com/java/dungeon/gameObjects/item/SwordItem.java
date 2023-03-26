@@ -12,7 +12,7 @@ public class SwordItem extends Item {
     public final int power;
     public SwordItem() {
         super(new Texture(Gdx.files.internal("textures/item/sword_item.png")), 1500); // TODO - Probably should dispose this texture at some point
-        width = 32;
+        width = 100;
         height = 100;
         power = 2;
     }

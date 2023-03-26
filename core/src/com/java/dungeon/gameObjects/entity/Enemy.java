@@ -80,6 +80,11 @@ public class Enemy extends Entity {
     }
 
     @Override
+    public void heal(int amount) {
+
+    }
+
+    @Override
     protected void die() {
         shouldDie = true;
     }

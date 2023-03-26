@@ -22,6 +22,12 @@
       "isUnlocked": true
     }
   ],
-  "items": [],
+  "items": [
+      {
+        "class": "com.java.dungeon.gameObjects.item.HealthPotion",
+        "x": 800,
+        "y": 400
+      }
+  ],
   "entities": []
 }

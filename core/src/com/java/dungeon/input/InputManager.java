@@ -37,6 +37,13 @@ public class InputManager {
         int tempY = player.y;
         int playerSpeed = player.getSpeed();
 
+        if (speed > 1.0f) {
+            speed = 1.0f;
+        }
+        else if (speed < 0.0f) {
+            speed = 0;
+        }
+
         if (playerHorizontalMovment != null) player.playerHorizontalMovment = playerHorizontalMovment;
         if (playerVerticalMovment != null) player.playerVerticalMovment = playerVerticalMovment;
 

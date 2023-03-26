@@ -6,7 +6,7 @@ import com.java.dungeon.JavaDungeonGame;
 import com.java.dungeon.gameObjects.GameObject;
 
 public abstract class Entity extends GameObject {
-    private int health;
+    protected int health;
     private int speed;
     public final Texture texture;
     protected final JavaDungeonGame game;
@@ -31,6 +31,8 @@ public abstract class Entity extends GameObject {
             die();
         }
     }
+
+    public abstract void heal(int amount);
 
     protected abstract void die();
 

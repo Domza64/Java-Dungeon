@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.java.dungeon.FontUtils;
 import com.java.dungeon.JavaDungeonGame;
+import com.java.dungeon.UiManager;
 import com.java.dungeon.Utils;
 import com.java.dungeon.gameObjects.ExitObject;
 import com.java.dungeon.gameObjects.entity.Enemy;
@@ -25,12 +26,9 @@ public class GameScreen implements Screen {
     private Texture background;
     private Room currentRoom;
 
-    // TODO - playerHealthDisplay is temp for testing it will be done in UI update
-    private final BitmapFont playerHealthDisplay;
     public GameScreen(final JavaDungeonGame game, Rooms room) {
         this.game = game;
         viewport = new ExtendViewport(game.GAME_WIDTH, game.GAME_HEIGHT);
-        playerHealthDisplay = FontUtils.getFont(FontUtils.Fonts.BITMGOTHIC, 64, new Color(0.85f, 0.8f, 0.7f, 1f));
         loadRoom(room);
     }
 
@@ -67,17 +65,16 @@ public class GameScreen implements Screen {
         ScreenUtils.clear(Color.BLACK);
 
         viewport.apply(false);
+        // Camera follow player
 //        viewport.getCamera().position.set(new Vector2(game.player.x + ((float)game.player.width / 2), game.player.y + ((float)game.player.height / 2)), 1);
         game.batch.setProjectionMatrix(viewport.getCamera().combined);
 
+        // Call update
         update(delta);
 
-        float worldWidth = viewport.getWorldWidth();
-        float worldHeight = viewport.getWorldHeight();
-
+        // Render stuff
         game.batch.begin();
         // Background
-//        game.batch.draw(background, (worldWidth - GAME_WIDTH) / 2, (worldHeight - GAME_HEIGHT) / 2, GAME_WIDTH, GAME_HEIGHT);
         game.batch.draw(background, 0, 0, game.GAME_WIDTH, game.GAME_HEIGHT);
         // Player
         game.player.render(game.batch);
@@ -103,17 +100,14 @@ public class GameScreen implements Screen {
             game.batch.draw(new Texture(Gdx.files.internal("textures/ui/pause_menu.png")),
                     (viewport.getWorldWidth() / 2) - (450 / 2f), (viewport.getWorldHeight() / 2) - (270 / 2f), 450, 270);
         }
-
-
-        // TEMP
-        playerHealthDisplay.draw(game.batch, "Health: " + game.player.getHealth(), 50, 680);
+        // UI
+        UiManager.draw(game.batch, viewport, game.player);
 
         game.batch.end();
     }
 
     private void checkCollision() {
         // Checks if player collides with anything
-
         if (!game.exits.isEmpty()) {
             for (ExitObject e : game.exits) {
                 if (game.player.intersects(e)) {
@@ -129,7 +123,6 @@ public class GameScreen implements Screen {
                 }
             }
         }
-
         if (!game.items.isEmpty()) {
             for (Item i : game.items) {
                 if (game.player.intersects(i)) {
@@ -176,6 +169,7 @@ public class GameScreen implements Screen {
     public void dispose() {
         background.dispose();
         game.player.dispose();
+        UiManager.dispose();
     }
 
     public void setBackground(Texture texture) {
