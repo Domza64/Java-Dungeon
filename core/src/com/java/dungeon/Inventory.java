@@ -1,6 +1,6 @@
 package com.java.dungeon;
 
-import com.java.dungeon.gameObjects.item.Item;
+import com.java.dungeon.object.item.Item;
 
 import java.util.ArrayList;
 

@@ -1,9 +1,9 @@
 {
-  "music": "LEVEL_THEME_2",
+  "music": "LEVEL_THEME_3",
   "background": "ROOM_BACKGROUND",
-  "number": 3,
-  "exits": [
+  "gameObjects": [
     {
+      "class": "com.java.dungeon.object.ExitObject",
       "x": 590,
       "y": 570,
       "width": 100,
@@ -13,6 +13,7 @@
       "isUnlocked": true
     },
     {
+      "class": "com.java.dungeon.object.ExitObject",
       "x": 1180,
       "y": 285,
       "width": 100,
@@ -24,7 +25,7 @@
   ],
   "items": [
       {
-        "class": "com.java.dungeon.gameObjects.item.HealthPotion",
+        "class": "com.java.dungeon.object.item.HealthPotion",
         "x": 800,
         "y": 400
       }

@@ -1,7 +1,7 @@
 package com.java.dungeon.rooms;
 
 import com.java.dungeon.JavaDungeonGame;
-import com.java.dungeon.gameObjects.entity.Enemy;
+import com.java.dungeon.entity.Enemy;
 import com.java.dungeon.screens.GameScreen;
 
 public class BossRoom extends Room {

@@ -3,9 +3,9 @@ package com.java.dungeon.rooms;
 import com.badlogic.gdx.utils.Array;
 import com.java.dungeon.Backgrounds;
 import com.java.dungeon.JavaDungeonGame;
-import com.java.dungeon.gameObjects.ExitObject;
-import com.java.dungeon.gameObjects.entity.Entity;
-import com.java.dungeon.gameObjects.item.Item;
+import com.java.dungeon.object.GameObject;
+import com.java.dungeon.entity.Entity;
+import com.java.dungeon.object.item.Item;
 import com.java.dungeon.screens.GameScreen;
 import com.java.dungeon.sounds.Sounds;
 
@@ -13,7 +13,7 @@ public class Room {
     public Sounds music;
     public Backgrounds background;
     public int number;
-    public Array<ExitObject> exits;
+    public Array<GameObject> gameObjects;
     public Array<Item> items;
     public Array<Entity> entities;
 
@@ -29,7 +29,7 @@ public class Room {
         }
 
         game.items = new Array<>(items);
-        game.exits = new Array<>(exits);
+        game.gameObjects = new Array<>(gameObjects);
         game.entities = new Array<>(entities);
     }
 

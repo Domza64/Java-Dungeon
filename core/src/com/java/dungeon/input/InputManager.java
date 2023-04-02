@@ -3,9 +3,9 @@ package com.java.dungeon.input;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.controllers.Controllers;
 import com.java.dungeon.JavaDungeonGame;
-import com.java.dungeon.gameObjects.entity.player.Player;
-import com.java.dungeon.gameObjects.entity.player.PlayerHorizontalMovment;
-import com.java.dungeon.gameObjects.entity.player.PlayerVerticalMovment;
+import com.java.dungeon.entity.player.Player;
+import com.java.dungeon.entity.player.PlayerHorizontalMovment;
+import com.java.dungeon.entity.player.PlayerVerticalMovment;
 import com.java.dungeon.screens.MainMenuScreen;
 
 public class InputManager {

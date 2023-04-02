@@ -8,6 +8,7 @@ public enum SoundEffects {
     WHIP_EFFECT("sounds/effects/whip.mp3"),
     SWORD_EFFECT("sounds/effects/sword.mp3"),
     COOL_DOOR_EFFECT("sounds/effects/cool_door.mp3"),
+    POTION_EFFECT("sounds/effects/potion.mp3"),
     DOOR_EFFECT("sounds/effects/door.mp3");
 
     private final String label;

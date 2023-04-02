@@ -1,23 +1,38 @@
 {
-  "music": "LEVEL_THEME_2",
-  "background": "ROOM_BACKGROUND_2",
+  "music": "LEVEL_THEME_3",
+  "background": "ROOM_BACKGROUND_3",
   "number": 2,
-  "exits": [
+  "gameObjects": [
     {
+      "class": "com.java.dungeon.object.ExitObject",
       "x": 0,
-      "y": 285,
-      "width": 100,
-      "height": 150,
+      "y": 420,
+      "width": 40,
+      "height": 155,
       "leadsTo": "ROOM_1",
       "effect": "DOOR_EFFECT",
       "isUnlocked": true
+    },
+    {
+      "class": "com.java.dungeon.object.Sign",
+      "x": 900,
+      "y": 600,
+      "width": 72,
+      "height": 72,
+    },
+    {
+      "class": "com.java.dungeon.object.Sign",
+      "x": 400,
+      "y": 200,
+      "width": 72,
+      "height": 72,
     }
   ],
   "items": [
     {
-      "class": "com.java.dungeon.gameObjects.item.SwordItem",
-      "x": 1000,
-      "y": 200
+      "class": "com.java.dungeon.object.item.SwordItem",
+      "x": 280,
+      "y": 110
     }
   ],
   "entities": []

@@ -1,9 +1,10 @@
 {
-  "music": "LEVEL_THEME_2",
+  "music": "LEVEL_THEME_3",
   "background": "ROOM_BACKGROUND",
   "number": 4,
-  "exits": [
+  "gameObjects": [
     {
+      "class": "com.java.dungeon.object.ExitObject",
       "x": 1180,
       "y": 285,
       "width": 100,
@@ -13,6 +14,7 @@
       "isUnlocked": true
     },
     {
+      "class": "com.java.dungeon.object.ExitObject",
       "x": 590,
       "y": 0,
       "width": 100,
@@ -24,7 +26,7 @@
   ],
   "items": [
     {
-      "class": "com.java.dungeon.gameObjects.item.KeyItem",
+      "class": "com.java.dungeon.object.item.KeyItem",
       "x": 200,
       "y": 20
     }

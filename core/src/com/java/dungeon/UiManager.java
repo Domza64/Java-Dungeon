@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.java.dungeon.gameObjects.entity.player.Player;
+import com.java.dungeon.entity.player.Player;
 
 public class UiManager {
     private static Texture hudBackground = new Texture(Gdx.files.internal("textures/ui/hud_background.png"));
